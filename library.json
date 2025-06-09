@@ -19,7 +19,7 @@
   "license": "MIT",
   "homepage": "https://github.com/SofaPirate/PqLEDStrip",
   "dependencies": {
-    "external-repo": "https://github.com/SofaPirate/Plaquette.git"
+    "Plaquette": "https://github.com/SofaPirate/Plaquette.git"
   },
   "frameworks": "*",
   "platforms": "*"
