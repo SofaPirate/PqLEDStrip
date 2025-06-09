@@ -1,0 +1,26 @@
+{
+  "name": "PqLEDStrip",
+  "version": "0.1",
+  "description": "LED strip library for Plaquette",
+  "keywords": "Display",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/SofaPirate/PqLEDStrip.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Thomas Fredericks",
+      "url": "https://github.com/thomasfredericks",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/SofaPirate/PqLEDStrip",
+  "dependencies": {
+    "external-repo": "https://github.com/SofaPirate/Plaquette.git"
+  },
+  "frameworks": "*",
+  "platforms": "*"
+}
