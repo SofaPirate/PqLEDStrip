@@ -152,7 +152,7 @@ inline _PqStripManager PqStripManager;
 
         void step()
         {
-            
+
             controller->showLeds(255);
         }
 
@@ -164,12 +164,16 @@ inline _PqStripManager PqStripManager;
             // _value = constrain(initialValue, 0, 1);
         }
 
-
-        void applyWave(AbstractWave & wave) {
-            float step = 1.0 / float(COUNT);
-            for ( int i =0; i < COUNT; i++) {
-                _pixels[i] = palette.getColor( wave.shiftByTime(float(i)*step) );
-            }  
+        void applyWave(AbstractWave &wave, float period = 1.0)
+        {
+            if (period > 0)
+            {
+                float step = period / float(COUNT);
+                for (int i = 0; i < COUNT; i++)
+                {
+                    _pixels[i] = palette.getColor(wave.getShiftedByTime(float(i) * step));
+                }
+            }
         }
         /*
             PqStripWS281X & pixel(int pixelIndex) {
