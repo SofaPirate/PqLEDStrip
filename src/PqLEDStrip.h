@@ -141,6 +141,9 @@ inline _PqStripManager PqStripManager;
         int _pixelIndex = 0;
         CLEDController *controller;
 
+        float _durationOrCycles;
+        bool _durationMode;
+
     public:
         PqPalette palette;
 
@@ -158,17 +161,26 @@ inline _PqStripManager PqStripManager;
 
     public:
         /// Constructor.
-        PqStripWS281X() : Unit()
+        PqStripWS281X() : Unit(), _durationOrCycles(1.0), _durationMode(true)
         {
             // engine.addAttachment(&_fastLedSingletonAttachment);
             // _value = constrain(initialValue, 0, 1);
         }
 
-        void applyWave(AbstractWave &wave, float period = 1.0)
+        void waveDisplayDuration(float duration) {
+            _durationOrCycles = duration;
+            _durationMode = true;
+        }
+
+        void waveDisplayCycles(float nCycles) {
+            _durationOrCycles = nCycles;
+            _durationMode = false;
+        }
+
+        void applyWave(AbstractWave &wave)
         {
-            if (period > 0)
-            {
-                float step = period / float(COUNT);
+            if (_durationOrCycles > 0) {
+                float step = (_durationMode ? _durationOrCycles : wave.period() * _durationOrCycles) / float(COUNT);
                 for (int i = 0; i < COUNT; i++)
                 {
                     _pixels[i] = palette.getColor(wave.getShiftedByTime(float(i) * step));
