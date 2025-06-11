@@ -4,6 +4,13 @@
 #include <Plaquette.h>
 #include <FastLED.h>
 
+/* TODO
+
+NEED AN ASSERTION FOR COUNT > 0
+
+
+*/
+
 namespace pq
 {
     /*
@@ -140,6 +147,9 @@ inline _PqStripManager PqStripManager;
         CRGB _pixels[COUNT];
         int _pixelIndex = 0;
         CLEDController *controller;
+        bool _needToShow = false;
+        bool _needToFill = false;
+        float _value;
 
     public:
         PqPalette palette;
@@ -153,7 +163,13 @@ inline _PqStripManager PqStripManager;
         void step()
         {
 
-            controller->showLeds(255);
+            if (_needToShow)
+            {
+                _needToShow = false;
+                //_pixels[0] = CRGB(255,0,0);
+                //_pixels[1] = CRGB(0,255,0);
+                controller->showLeds(255);
+            }
         }
 
     public:
@@ -164,47 +180,70 @@ inline _PqStripManager PqStripManager;
             // _value = constrain(initialValue, 0, 1);
         }
 
-        void applyWave(AbstractWave &wave, float period = 1.0)
+        void apply(AbstractMap &map)
         {
-            if (period > 0)
-            {
-                float step = period / float(COUNT);
-                for (int i = 0; i < COUNT; i++)
-                {
-                    _pixels[i] = palette.getColor(wave.getShiftedByTime(float(i) * step));
-                }
+
+            float stepInterval = pq::stepIntervalForNormalizedValue(COUNT);
+            // if COUNT == 2, step = 0.5, so interated values are 0, 0.5 and 1
+            // if COUNT == 3, step = 0.33333,
+            /*for (float f =0; f <= 1.0; f += step) {
+
             }
+            */
+            for (int i = 0; i < COUNT; i++)
+            {
+
+                _pixels[i] = palette.getColor(map.read(float(i) * stepInterval));
+            }
+
+            _needToShow = true;
         }
         /*
-            PqStripWS281X & pixel(int pixelIndex) {
-                _pixelIndex = constrain(pixelIndex,0,COUNT);
-                return *this;
-            }
+                void applyWave(AbstractWave &wave, float period = 1.0)
+                {
+                    if (period > 0)
+                    {
+                        float step = period / float(COUNT);
+                        for (int i = 0; i < COUNT; i++)
+                        {
+                            _pixels[i] = palette.getColor(wave.getShiftedByTime(float(i) * step));
+                        }
+                    }
+                }
+                    */
 
-            PqStripWS281X &  setRGBFromBlend(CRGB start, CRGB end) {
-                uint8_t amount = (uint8_t)(_value * 255.0);
-                _pixels[_pixelIndex] = CRGB::blend(start, end, amount);
-                return *this;
-            }
-        */
         /*
-            void setPalette( CRGB alpha , CRGB beta ) {
+                            PqStripWS281X & pixel(int pixelIndex) {
+                                _pixelIndex = constrain(pixelIndex,0,COUNT);
+                                return *this;
+                            }
 
-            }
+                            PqStripWS281X &  setRGBFromBlend(CRGB start, CRGB end) {
+                                uint8_t amount = (uint8_t)(_value * 255.0);
+                                _pixels[_pixelIndex] = CRGB::blend(start, end, amount);
+                                return *this;
+                            }
 
-            void pixel(int index) {
 
-            }
-        */
+                    void setPalette( CRGB alpha , CRGB beta ) {
+
+                    }
+
+                    void pixel(int index) {
+
+                    }
+                */
         // virtual ~PqStripWS281X() {}
 
         // PUT SHOULD BE A FORCED OVERRIDE
         float put(float value) override
         {
             _value = constrain01(value);
-            // uint8_t frac8 = floor(_value * 255.0);
+
             CRGB color = palette.getColor(_value);
             fill_solid(_pixels, COUNT, color);
+            _needToShow = true;
+
             return get();
         } // do nothing by default (read-only)
 
@@ -216,9 +255,6 @@ inline _PqStripManager PqStripManager;
 
         /// Maps value to new range.
         // virtual float mapTo(float toLow, float toHigh) { return mapFrom01(get(), toLow, toHigh); }
-
-    protected:
-        float _value;
     };
 }
 #endif
