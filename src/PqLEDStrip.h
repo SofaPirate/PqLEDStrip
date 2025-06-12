@@ -1,7 +1,7 @@
 #ifndef _PQ_LED_STRIP_
 #define _PQ_LED_STRIP_
 
-#include <Plaquette.h>
+#include <PqCore.h>
 #include <FastLED.h>
 
 /* TODO
