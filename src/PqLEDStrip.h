@@ -1,7 +1,7 @@
 #ifndef _PQ_LED_STRIP_
 #define _PQ_LED_STRIP_
 
-#include <PqCore.h>
+#include <PlaquetteLib.h>
 #include <FastLED.h>
 
 /* TODO
@@ -27,7 +27,7 @@ inline _PqStripManager PqStripManager;
 
     // --------------------------------------------------------
 
-    class PqLEDStripPalette
+    class LEDStripPalette
     {
 
     private:
@@ -140,7 +140,7 @@ inline _PqStripManager PqStripManager;
     // =================================================
 
     template <uint32_t PIN, EOrder ORDER, uint32_t COUNT>
-    class PqLEDStripWS281X : public Unit
+    class LEDStripWS281X : public Unit
     {
     private:
         const uint32_t _count = COUNT;
@@ -152,7 +152,7 @@ inline _PqStripManager PqStripManager;
         float _value;
 
     public:
-        PqLEDStripPalette palette;
+        LEDStripPalette palette;
 
     protected:
         void begin() override
@@ -174,7 +174,7 @@ inline _PqStripManager PqStripManager;
 
     public:
         /// Constructor.
-        PqLEDStripWS281X() : Unit()
+        LEDStripWS281X() : Unit()
         {
             // engine.addAttachment(&_fastLedSingletonAttachment);
             // _value = constrain(initialValue, 0, 1);
