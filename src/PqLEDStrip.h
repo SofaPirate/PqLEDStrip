@@ -180,7 +180,7 @@ inline _PqStripManager PqStripManager;
             // _value = constrain(initialValue, 0, 1);
         }
 
-        void apply(AbstractMap &map)
+        void draw(AbstractMap &map)
         {
 
             float stepInterval = pq::stepIntervalForNormalizedValue(COUNT);
