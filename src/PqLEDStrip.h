@@ -13,17 +13,47 @@ NEED AN ASSERTION FOR COUNT > 0
 
 namespace pq
 {
-    /*
-class _PqStripManager : public Unit {
+    class CubeLayout
+    {
+        // Dimensions of your cube
+        const uint32_t _lanes;
+        const uint32_t _depths;
+        const uint32_t _heights;
 
-    float get() override { return 0; }
+    public:
+        CubeLayout(uint32_t lanes, uint32_t depths, uint32_t heights) : _lanes(lanes), _depths(depths), _heights(heights)
+        {
+        }
 
-    void step() override {
-        FastLED.show();
-    }
-};
-inline _PqStripManager PqStripManager;
-*/
+        size_t getIndex(uint32_t l_q032, uint32_t d_q032, uint32_t h_q032)
+        {
+            // Convert Q0.32 to integer coordinates
+            uint32_t l = (uint64_t)l_q032 * _lanes >> 32;
+            uint32_t d = (uint64_t)d_q032 * _depths >> 32;
+            uint32_t h = (uint64_t)h_q032 * _heights >> 32;
+
+            // Clamp to bounds (really necessary?)
+            if (l >= _lanes)
+                l = _lanes - 1;
+            if (d >= _depths)
+                d = _depths - 1;
+            if (h >= _heights)
+                h = _heights - 1;
+
+            // Compute linear index (l fast, then d, then h)
+            return h + d * _lanes + l * _heights * _depths; // l + d * _lanes + h * _lanes * _depths;
+        }
+
+        // uint32_t pos[3];
+        // cube.getPosition(idx, pos);
+        void getPosition(size_t index, uint32_t out_pos[3])
+        {
+            out_pos[0] = index / (_heights * _depths); // lane
+            uint32_t rem = index % (_heights * _depths);
+            out_pos[1] = rem / _heights; // depth
+            out_pos[2] = rem % _heights; // height
+        }
+    };
 
     // --------------------------------------------------------
 
