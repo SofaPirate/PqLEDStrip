@@ -15,71 +15,22 @@ namespace pq
 {
 
     const uint8_t PROGMEM gamma8[] = {
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
-    1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
-    2,  3,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,  5,  5,  5,
-    5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,  8,  9,  9,  9, 10,
-   10, 10, 11, 11, 11, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16,
-   17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 24, 24, 25,
-   25, 26, 27, 27, 28, 29, 29, 30, 31, 32, 32, 33, 34, 35, 35, 36,
-   37, 38, 39, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 50,
-   51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68,
-   69, 70, 72, 73, 74, 75, 77, 78, 79, 81, 82, 83, 85, 86, 87, 89,
-   90, 92, 93, 95, 96, 98, 99,101,102,104,105,107,109,110,112,114,
-  115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
-  144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
-  177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
-  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 };
-
-  // https://www.programiz.com/online-compiler/4fkzMzr2GyqMg
-    class CubeLayout
-        {
-            // Dimensions of your cube
-            const uint32_t _lanes;
-            const uint32_t _depths;
-            const uint32_t _heights;
-            uint32_t _lmult, _dmult, _hmult;
-            
-    
-        public:
-            CubeLayout(uint32_t lanes, uint32_t depths, uint32_t heights) : _lanes(lanes), _depths(depths), _heights(heights)
-            {
-                _lmult = 0xFFFFFFFF / (_lanes-1);
-                _dmult = 0xFFFFFFFF / (_depths-1);
-                _hmult = 0xFFFFFFFF / (_heights-1);
-            }
-    
-            size_t getIndexAtPhases(uint32_t l_q032, uint32_t d_q032, uint32_t h_q032)
-            {
-                // Convert Q0.32 to integer coordinates
-                uint32_t l = (uint64_t)l_q032 * _lanes >> 32;
-                uint32_t d = (uint64_t)d_q032 * _depths >> 32;
-                uint32_t h = (uint64_t)h_q032 * _heights >> 32;
-    
-                // Clamp to bounds (really necessary?)
-                if (l >= _lanes)
-                    l = _lanes - 1;
-                if (d >= _depths)
-                    d = _depths - 1;
-                if (h >= _heights)
-                    h = _heights - 1;
-    
-                // Compute linear index (l fast, then d, then h)
-                return  h + d * _heights + l * _heights * _depths; 
-                //h + d * _lanes + l * _heights * _depths; // l + d * _lanes + h * _lanes * _depths;
-            }
-    
-            // uint32_t pos[3];
-            // cube.getPosition(idx, pos);
-            void getPhasesAtIndex(size_t index, uint32_t * l, uint32_t * d, uint32_t * h)
-            {
-                *l = (index / (_heights * _depths)) * _lmult; // lane
-                uint32_t rem = index % (_heights * _depths);
-                *d = (rem / _heights) * _dmult; // depth
-                *h = (rem % _heights) * _hmult; // height
-            }
-            };
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+        2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5,
+        5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10,
+        10, 10, 11, 11, 11, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16,
+        17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 24, 24, 25,
+        25, 26, 27, 27, 28, 29, 29, 30, 31, 32, 32, 33, 34, 35, 35, 36,
+        37, 38, 39, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 50,
+        51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68,
+        69, 70, 72, 73, 74, 75, 77, 78, 79, 81, 82, 83, 85, 86, 87, 89,
+        90, 92, 93, 95, 96, 98, 99, 101, 102, 104, 105, 107, 109, 110, 112, 114,
+        115, 117, 119, 120, 122, 124, 126, 127, 129, 131, 133, 135, 137, 138, 140, 142,
+        144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 167, 169, 171, 173, 175,
+        177, 180, 182, 184, 186, 189, 191, 193, 196, 198, 200, 203, 205, 208, 210, 213,
+        215, 218, 220, 223, 225, 228, 231, 233, 236, 239, 241, 244, 247, 249, 252, 255};
 
     // --------------------------------------------------------
 
@@ -206,6 +157,7 @@ namespace pq
         bool _needToShow = false;
         bool _needToFill = false;
         float _value;
+        float _normalizeStepValue;
 
     public:
         LEDStripPalette palette;
@@ -228,18 +180,25 @@ namespace pq
             }
         }
 
+
     public:
         /// Constructor.
         LEDStripWS281X() : Unit()
         {
             // engine.addAttachment(&_fastLedSingletonAttachment);
             // _value = constrain(initialValue, 0, 1);
+            if ( COUNT > 1 ) {
+                _normalizeStepValue = 1.0/(float(COUNT-1));
+            } else {
+                _normalizeStepValue = 0;
+            }
+            
         }
 
         void draw(AbstractMap &map)
         {
 
-            float stepInterval = pq::stepIntervalForNormalizedValue(COUNT);
+           // float stepInterval = getNormalizedStepInterval(COUNT);
             // if COUNT == 2, step = 0.5, so interated values are 0, 0.5 and 1
             // if COUNT == 3, step = 0.33333,
             /*for (float f =0; f <= 1.0; f += step) {
@@ -249,7 +208,7 @@ namespace pq
             for (int i = 0; i < COUNT; i++)
             {
 
-                _pixels[i] = palette.getColor(map.read(float(i) * stepInterval));
+                _pixels[i] = palette.getColor(map.read(float(i) * _normalizeStepValue));
             }
 
             _needToShow = true;
