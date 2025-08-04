@@ -18,10 +18,16 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/SofaPirate/PqLEDStrip",
-  "dependencies": {
-    "Plaquette": "https://github.com/SofaPirate/Plaquette.git#develop" ,
-    "fastled/FastLED": "*"
-  },
+  "dependencies": [
+    {
+      "name": "Plaquette",
+      "url": "https://github.com/SofaPirate/Plaquette.git#develop"
+    } ,
+    {
+      "name": "FastLED",
+      "url": "https://github.com/FastLED/FastLED#3.10.1"
+    }
+  ],
   "frameworks": "*",
   "platforms": "*"
 }
