@@ -94,7 +94,7 @@ A `TimeMap` not only collects data over time, but also spreads the processing ac
 
 This avoids a performance spike from computing all samples in a single burst right before updating the strip. Instead, a small amount of work is done each loop, keeping performance smooth and consistent.
 
-In *global space*, declare a `TimeMap` that contains 16 samples that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
+In *global space*, declare a `TimeMap` that contains 16 samples (the number of samples does **not** have to match the number of puxels) that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
 ```cpp
 TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50 ms
 ```
@@ -122,7 +122,7 @@ SineWave:    [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...
 LED draw:                                       Draw the collected data to the strip 
 ```
 
-The collected data is mapped to each pixel in order. The values are mapped to `CRGB` colors through a palette:
+The collected data is mapped to each pixel in order (the number of samples does **not** have to match the number of puxels) . The values are mapped to `CRGB` colors through a palette:
 ```text
 Pixel index :      0    1    2    3    4    5    6    7    8    9  ...
 Collected data : [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...
