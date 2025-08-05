@@ -23,7 +23,7 @@ LED strip library for Plaquette.
 ### Constructors
 
 #### `LEDStripWS281X()`
-No palette is set initially: values constrained between 0.0 and 1.0 will be mapped to grey colors.
+No palette is set initially. Default fallback is grayscale gradient.
 
 #### `LEDStripWS281X(const palette &p, TBlendType blend = LINEARBLEND)`
 Creates a strip and sets a palette.
