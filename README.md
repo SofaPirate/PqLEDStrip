@@ -101,7 +101,7 @@ TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50ms
 ```
 
 
-In your `loop()`, feed any float data (a Wave, a Ramp, analogIn, etc...) into the `TimeMap` and then check if the `TimeMap` has triggered (over the time of its period) and thell the `Strip` to draw the contents of the `TimeMap`:
+In your `loop()`, feed any float-based data source (such as a Wave, Ramp, or `analogIn`) into the `TimeMap`. Then, check if the `TimeMap` has triggered (i.e., its time period has elapsed), and instruct the Strip to draw using the collected samples:
 ```cpp
 SineWave >> timeMap;
 
