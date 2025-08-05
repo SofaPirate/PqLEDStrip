@@ -23,7 +23,7 @@ LED strip library for Plaquette.
 ### Default constructor
 
 #### `LEDStripWS281X()`
-Default constructor. No palette is set initially: values constrained between 0.0 and 1.0 will be mapped to grey colors.
+No palette is set initially: values constrained between 0.0 and 1.0 will be mapped to grey colors.
 
 ### Pixel  Management
 
