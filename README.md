@@ -89,15 +89,15 @@ Metronome:   [✓]         [✓]         [✓]         [✓]
 
 ### Draw a `TimeMap`
 
-A `TimeMap` allows you to establish a "time portal" between the fast `loop()` and the slow update speed of the LED Strip. 
+A `TimeMap` allows you to establish a "time bridge" between the fast `loop()` and the slow update speed of the LED Strip. 
 
-In *global space*, declare a TimeMap that contains 16 samples that will be taken over a periode of 50 milliseconds (for a refresh rate of 20 hz) :
+In *global space*, declare a TimeMap that contains 16 samples that will be taken over a period of 50 milliseconds (for a refresh rate of 20 hz):
 ```cpp
 TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50ms
 ```
 
 
-In your `loop()`, feed any float data (a Wave, a Ramp, analogIn, etc...) into the `TimeMap` and then check if the `TimeMap` has triggered (over the time of its period) and thell the `Strip` to draw the contents of the `TimeMap` :
+In your `loop()`, feed any float data (a Wave, a Ramp, analogIn, etc...) into the `TimeMap` and then check if the `TimeMap` has triggered (over the time of its period) and thell the `Strip` to draw the contents of the `TimeMap`:
 ```cpp
 SineWave >> timeMap;
 
