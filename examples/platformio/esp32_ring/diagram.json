@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -9.6, "left": -71.96, "attrs": {} },
+    {
+      "type": "wokwi-led-ring",
+      "id": "ring1",
+      "top": -76.16,
+      "left": 116.39,
+      "attrs": { "pixels": "16" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.3", "ring1:GND", "black", [ "h0" ] ],
+    [ "ring1:VCC", "esp:5V", "red", [ "v144", "h-288", "v-28.8" ] ],
+    [ "esp:4", "ring1:DIN", "green", [ "h0" ] ]
+  ],
+  "dependencies": {}
+}
