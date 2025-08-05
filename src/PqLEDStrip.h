@@ -89,8 +89,9 @@ namespace pq
             }
         }
 
-        private:
-           void init() {
+    private:
+        void init()
+        {
             if (COUNT > 1)
             {
                 _normalizeStepValue = 1.0 / (float(COUNT - 1));
@@ -99,19 +100,45 @@ namespace pq
             {
                 _normalizeStepValue = 0;
             }
-        
-    }
+        }
+        CRGB getColor(float value) const
+        {
+            uint8_t frac8 = floor(value * 255.0f);
+
+            switch (_paletteType)
+            {
+            case PaletteType::PALETTE16:
+                return ColorFromPalette(*_palette16, frac8, 255, _blend);
+            case PaletteType::PALETTE32:
+                return ColorFromPalette(*_palette32, frac8, 255, _blend);
+            case PaletteType::PALETTE256:
+                return ColorFromPalette(*_palette256, frac8, 255, _blend);
+            case PaletteType::PROGMEM16:
+                return ColorFromPalette(*_progmemPalette16, frac8, 255, _blend);
+                // Serial.println(frac8);
+                // return ColorFromPalette(RainbowColors_p,frac8, 255, _blend);
+                // return CRGB(frac8, 0, 0);
+            case PaletteType::HSV16:
+                return ColorFromPalette(*_hsvPalette16, frac8, 255, _blend);
+            case PaletteType::HSV32:
+                return ColorFromPalette(*_hsvPalette32, frac8, 255, _blend);
+            case PaletteType::HSV256:
+                return ColorFromPalette(*_hsvPalette256, frac8, 255, _blend);
+            case PaletteType::NONE:
+            default:
+                return CRGB(frac8, frac8, frac8);
+            }
+        }
 
     public:
-
- 
         /// Constructor.
         LEDStripWS281X()
         {
             init();
         }
 
-        void unsetPalette() {
+        void unsetPalette()
+        {
             _paletteType = PaletteType::NONE;
         }
 
@@ -214,34 +241,6 @@ namespace pq
                     _palette = NULL;
                 }
         */
-        CRGB getColor(float value) const
-        {
-            uint8_t frac8 = floor(value * 255.0f);
-
-            switch (_paletteType)
-            {
-            case PaletteType::PALETTE16:
-                return ColorFromPalette(*_palette16, frac8, 255, _blend);
-            case PaletteType::PALETTE32:
-                return ColorFromPalette(*_palette32, frac8, 255, _blend);
-            case PaletteType::PALETTE256:
-                return ColorFromPalette(*_palette256, frac8, 255, _blend);
-            case PaletteType::PROGMEM16:
-                return ColorFromPalette(*_progmemPalette16, frac8, 255, _blend);
-                //Serial.println(frac8);
-                //return ColorFromPalette(RainbowColors_p,frac8, 255, _blend);
-                //return CRGB(frac8, 0, 0);
-            case PaletteType::HSV16:
-                return ColorFromPalette(*_hsvPalette16, frac8, 255, _blend);
-            case PaletteType::HSV32:
-                return ColorFromPalette(*_hsvPalette32, frac8, 255, _blend);
-            case PaletteType::HSV256:
-                return ColorFromPalette(*_hsvPalette256, frac8, 255, _blend);
-            case PaletteType::NONE:
-            default:
-                return CRGB(frac8, frac8, frac8);
-            }
-        }
 
         void draw(AbstractMap &map)
         {
@@ -262,7 +261,8 @@ namespace pq
             _needToShow = true;
         }
 
-        void setPixel(int index, CRGB color) {
+        void setPixel(int index, CRGB color)
+        {
             _pixels[index] = color;
             _needToShow = true;
         }
