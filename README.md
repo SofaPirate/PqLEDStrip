@@ -106,13 +106,16 @@ if (timeMap.triggered()) // 50 milliseconds have passed
     strip.draw(timeMap); // Draw the 16 samples onto the strip using the current palette
 }
 ```
-This TimeMap accumulates 16 samples (e.g., from a wave or analog input) over 50 ms. Then it triggers once every 50 ms to update the LED strip using all the collected data.
+
+The TimeMap collects 16 samples over a 50 ms period (e.g., from a wave or analog input). After 50 ms, it triggers once and uses the collected samples to update the LED strip.
+
+To capture a full cycle of a waveform (like a Sine Wave), the waveform's period should match the TimeMap's period — in this case, 50 ms.
 
 ```text
 loop():      [ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ]...
 Time (ms):                                                 50  ...
-Sample Wave: [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...   
-                                                           |
+SineWave:    [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...   
+                                                            |
                                                 TimeMap triggers here (50 ms have passed)
 LED draw:                                       Draw the collected data to the strip 
 ```
