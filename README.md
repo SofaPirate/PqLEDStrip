@@ -60,21 +60,20 @@ Set a palette.
 - `blend` is either `LINEARBLEND` or `NOBLEND`.
 
 ## Best practices
-
-Usually, your `loop()` is running very fast (more than 1000 times per second). Now, a LED Strip does not need to (and cannot) be updated so fast. So you **must update the LED Strip at a slower internal**. Here are two techniques. One with a `Plaquette Metronome` and another with a `Plaquette TimeMap`.
+Usually, your `loop()` is running very fast (more than 1000 times per second). Now, an LED strip does not need to (and cannot) be updated so fast. So you **must update the LED strip at a slower interval**. Here are two techniques: one with a `Plaquette Metronome` and another with a `Plaquette TimeMap`.
 
 ### With a `Metronome`
 
-In *global space*, declare a Metronome with a periode of 50 milliseconds (for a refresh rate of 20 hz) :
+In *global space*, declare a Metronome with a period of 50 milliseconds (for a refresh rate of 20 Hz):
 ```cpp
 Metronome stripUpdateMetronome{0.05};
 ```
 
-In your `loop()`, check if the `Metronome` has triggered and update the `Strip` :
+In your `loop()`, check if the `Metronome` has triggered and update the `strip`:
 ```cpp
 if (stripUpdateMetronome)
 {
-    // Update the Strip here
+    // Update the strip here
 }
 ```
 
@@ -85,23 +84,22 @@ Time (ms):    0           50         100         150
 Metronome:   [✓]         [✓]         [✓]         [✓]
               ^           ^           ^           ^
               LED update  LED update  LED update  LED update
-``` 
+```
 
 ### Draw a `TimeMap`
 
-A `TimeMap` allows you to establish a "time bridge" between the fast `loop()` and the slow update speed of the LED Strip. 
+A `TimeMap` allows you to establish a "time bridge" between the fast `loop()` and the slow update speed of the LED strip.
 
-A TimeMap not only collects data over time, but also spreads the processing across multiple loop() iterations.
+A `TimeMap` not only collects data over time, but also spreads the processing across multiple `loop()` iterations.
 
-This avoids a performance spike from computing all samples in a single burst right before updating the Strip. Instead, a small amount of work is done each loop, keeping performance smooth and consistent. 
+This avoids a performance spike from computing all samples in a single burst right before updating the strip. Instead, a small amount of work is done each loop, keeping performance smooth and consistent.
 
-In *global space*, declare a TimeMap that contains 16 samples that will be taken over a period of 50 milliseconds (for a refresh rate of 20 hz):
+In *global space*, declare a `TimeMap` that contains 16 samples that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
 ```cpp
-TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50ms
+TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50 ms
 ```
 
-
-In your `loop()`, feed any float-based data source (such as a Wave, Ramp, or `analogIn`) into the `TimeMap`. Then, check if the `TimeMap` has triggered (i.e., its time period has elapsed), and instruct the Strip to draw using the collected samples:
+In your `loop()`, feed any float-based data source (such as a Wave, Ramp, or `analogIn`) into the `TimeMap`. Then, check if the `TimeMap` has triggered (i.e., its time period has elapsed), and instruct the strip to draw using the collected samples:
 ```cpp
 SineWave >> timeMap;
 
@@ -111,9 +109,9 @@ if (timeMap.triggered()) // 50 milliseconds have passed
 }
 ```
 
-The TimeMap collects 16 samples over a 50 ms period (e.g., from a wave or analog input). After 50 ms, it triggers once and uses the collected samples to update the LED strip.
+The `TimeMap` collects 16 samples over a 50 ms period (e.g., from a wave or analog input). After 50 ms, it triggers once and uses the collected samples to update the LED strip.
 
-To capture a full cycle of a waveform (like a Sine Wave), the waveform's period should match the TimeMap's period — in this case, 50 ms.
+To capture a full cycle of a waveform (like a SineWave), the waveform's period should match the `TimeMap`'s period — in this case, 50 ms.
 
 ```text
 loop():      [ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ]...
@@ -124,9 +122,10 @@ SineWave:    [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...
 LED draw:                                       Draw the collected data to the strip 
 ```
 
-The collected data is mapped to each pixel in order. The values are mapped to CRGB colors through a palette : 
+The collected data is mapped to each pixel in order. The values are mapped to `CRGB` colors through a palette:
 ```text
 Pixel index :      0    1    2    3    4    5    6    7    8    9  ...
 Collected data : [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...
 Palette lookup:  CRGB CRGB CRGB CRGB CRGB CRGB CRGB CRGB CRGB CRGB ...
 ```
+
