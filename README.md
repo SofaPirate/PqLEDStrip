@@ -8,7 +8,7 @@ LED strip library for Plaquette.
 
 ### Example declaration
 
-`LEDStripWS281X<PIN, ORDER, COUNT> myStrip()`
+`LEDStripWS281X<3, RGB, 16> myStrip()`
 
 ### Template Parameters
 
@@ -33,6 +33,11 @@ Fills the entire strip using values from a Plaquette Map, rendered with the curr
 #### `void setPixel(int index, CRGB color)`
 Manually set the color of an individual pixel.
 
+#### `size_t getCount()`
+Get the count of the pixels.
+
+#### `void setBrightness(float brightness)`
+Set the strip brightness between 0.0 and 1.0.
 
 ## Advanced
 

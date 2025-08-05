@@ -48,6 +48,7 @@ namespace pq
         bool _needToFill = false;
         float _value;
         float _normalizeStepValue;
+        int _brightness = 255;
 
     private:
         enum class PaletteType
@@ -85,7 +86,7 @@ namespace pq
             if (_needToShow)
             {
                 _needToShow = false;
-                controller->showLeds(255);
+                controller->showLeds(_brightness);
             }
         }
 
@@ -265,6 +266,14 @@ namespace pq
         {
             _pixels[index] = color;
             _needToShow = true;
+        }
+
+        size_t getCount() {
+            return COUNT;
+        }
+
+        void setBrightness(float f) {
+            _brightness = constrain( floor(f * 255.0f) , 0, 255);
         }
 
         // PUT SHOULD BE A FORCED OVERRIDE
