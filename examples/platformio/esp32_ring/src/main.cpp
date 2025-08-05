@@ -40,7 +40,7 @@ Metronome stripMetronome{0.05};
 Metronome modeMetronome{5.0};
 
 int demoMode = 0;
-int demoModeCount = 4;
+int demoModeCount = 5;
 
 void begin()
 {
@@ -52,6 +52,8 @@ void step()
     if (modeMetronome)
     {
         demoMode = (demoMode + 1) % demoModeCount;
+        // RESET BRIGHTNESS TO 1.0 (default)
+        strip.setBrightness(1.0);
     }
 
     if (demoMode == 0)
@@ -82,6 +84,7 @@ void step()
         if (timeMap.triggered())
         {
             strip.setPalette(RainbowColors_p);
+            strip.setBrightness( sineWaveSlow );
             strip.draw(timeMap);
             rampWaveFast.phase(0);
         }
@@ -94,6 +97,17 @@ void step()
             strip.setPalette(customPalette_p);
             strip.draw(timeMap);
             rampWaveFast.phase(sineWaveSlow);
+        }
+    } else if (demoMode == 4)
+    {
+        // WE ARE UPDATING THE STRIP EVERY 50 MILLISECONDS
+        if (stripMetronome)
+        {
+            // SETTING PIXEL COLORS WITHOUT A MAP AND WITOUT A PALETTE :(
+            for ( int i =0; i < strip.getCount() ; i++) {
+                CRGB color = CRGB( floor(float(i)/float(strip.getCount())*255.0), 0, 0 );
+                strip.setPixel(i,color);
+            }
         }
     }
 }
