@@ -6,6 +6,10 @@ LED strip library for Plaquette.
 
 ## Basics
 
+- `PqLEDStrip` use the `FastLED` library for LED control.
+- Do not call `FastLED.show()` as you might be used to. `PqLEDStrip` manages this automagically for you.
+- Try *not* to set the value of the pixels every iteration of the loop, but either with a `Plaquette TimeSlice Map` or on an interval set with a `Plaquette Metronome`. 
+
 ### Example declaration
 
 `LEDStripWS281X<3, RGB, 16> myStrip()`
