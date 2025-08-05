@@ -91,6 +91,10 @@ Metronome:   [✓]         [✓]         [✓]         [✓]
 
 A `TimeMap` allows you to establish a "time bridge" between the fast `loop()` and the slow update speed of the LED Strip. 
 
+A TimeMap not only collects data over time, but also spreads the processing across multiple loop() iterations.
+
+This avoids a performance spike from computing all samples in a single burst right before updating the Strip. Instead, a small amount of work is done each loop, keeping performance smooth and consistent. 
+
 In *global space*, declare a TimeMap that contains 16 samples that will be taken over a period of 50 milliseconds (for a refresh rate of 20 hz):
 ```cpp
 TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50ms
