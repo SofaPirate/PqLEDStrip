@@ -20,10 +20,16 @@ LED strip library for Plaquette.
 | `ORDER`   | The color order (e.g., `GRB`, `RGB`, etc.). |
 | `COUNT`   | The number of LEDs in the strip. |
 
-### Default constructor
+### Constructors
 
 #### `LEDStripWS281X()`
 No palette is set initially: values constrained between 0.0 and 1.0 will be mapped to grey colors.
+
+#### `LEDStripWS281X(const palette &p, TBlendType blend = LINEARBLEND)`
+Creates a strip and sets a palette.
+
+- `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
+- `blend` is either `LINEARBLEND` or `NOBLEND`.
 
 ### Pixel  Management
 
@@ -39,69 +45,14 @@ Get the count of the pixels.
 #### `void setBrightness(float brightness)`
 Set the strip brightness between 0.0 and 1.0.
 
-## Advanced
-
-### Constructors with palette assignement
-
-- Blending is either `LINEARBLEND` or `NOBLEND`.
-
-#### `LEDStripWS281X(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a `CRGBPalette16` palette.
-
-
-#### `LEDStripWS281X(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a `CRGBPalette32` palette.
-
-
-#### `LEDStripWS281X(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a `CRGBPalette256` palette.
-
-#### `LEDStripWS281X(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a palette stored in flash memory (PROGMEM), such as `RainbowColors_p`.
-
-#### `LEDStripWS281X(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a `CHSVPalette16` (HSV) palette.
-
-#### `LEDStripWS281X(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a `CHSVPalette32` palette.
-
-#### `LEDStripWS281X(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)`
-Creates a strip and sets a `CHSVPalette256` palette.
-
-
 ### Palette Management
-
-- Blending is either `LINEARBLEND` or `NOBLEND`.
 
 #### `void unsetPalette()`
 Removes the currently assigned palette. Default fallback is grayscale gradient.
 
-#### `void setPalette(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)`
-Set a `CRGBPalette16` palette.
-
-#### `void setPalette(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)`
-Set a `CRGBPalette32` palette.
-
-#### `void setPalette(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)`
-Set a `CRGBPalette256` palette.
-
-#### `void setPalette(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)`
-Set a flash-stored (PROGMEM) palette like `RainbowColors_p`.
-
-#### `void setPalette(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)`
-Set a `CHSVPalette16` HSV palette.
-
-#### `void setPalette(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)`
-Set a `CHSVPalette32` HSV palette.
-
-#### `void setPalette(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)`
-Set a `CHSVPalette256` HSV palette.
-
-
-
-
-
-
-
+#### `void setPalette(const palette &p, TBlendType blend = LINEARBLEND)`
+Set a palette.
+- `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
+- `blend` is either `LINEARBLEND` or `NOBLEND`.
 
 
