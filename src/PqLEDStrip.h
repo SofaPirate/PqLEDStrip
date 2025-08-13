@@ -261,11 +261,11 @@ namespace pq
                 }
         */
 
-        void draw(AbstractMap &map)
+        void draw(AbstractField &field)
         {
             for (int i = 0; i < COUNT; i++)
             {
-                float value = map.read(float(i) * _normalizeStepValue);
+                float value = field.read(float(i) * _normalizeStepValue);
                 CRGB color = getColor(value);
                 _pixels[i] = color;
                 /*

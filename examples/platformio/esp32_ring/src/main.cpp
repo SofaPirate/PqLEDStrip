@@ -33,7 +33,7 @@ TriangleWave rampWaveFast{0.05, 0}; // period of 50ms
 TriangleWave rampWaveSlow{3.0, 0};
 SineWave sineWaveSlow{3.0};
 
-TimeMap<16> timeMap{0.05}; // 16 samples over a period of 50ms
+TimeField<16> timeField{0.05}; // 16 samples over a period of 50ms
 
 Metronome stripMetronome{0.05};
 
@@ -68,34 +68,34 @@ void step()
     else if (demoMode == 1)
     {
 
-        rampWaveFast >> timeMap;
+        rampWaveFast >> timeField;
 
-        if (timeMap.triggered())
+        if (timeField.triggered())
         {
             strip.unsetPalette();
-            strip.draw(timeMap);
+            strip.draw(timeField);
             rampWaveFast.phase(rampWaveSlow);
         }
     }
     else if (demoMode == 2)
     {
-        rampWaveFast >> timeMap;
+        rampWaveFast >> timeField;
 
-        if (timeMap.triggered())
+        if (timeField.triggered())
         {
             strip.setPalette(RainbowColors_p);
             strip.setBrightness( sineWaveSlow );
-            strip.draw(timeMap);
+            strip.draw(timeField);
             rampWaveFast.phase(0);
         }
     } else if (demoMode == 3)
     {
-        rampWaveFast >> timeMap;
+        rampWaveFast >> timeField;
 
-        if (timeMap.triggered())
+        if (timeField.triggered())
         {
             strip.setPalette(customPalette_p);
-            strip.draw(timeMap);
+            strip.draw(timeField);
             rampWaveFast.phase(sineWaveSlow);
         }
     } else if (demoMode == 4)
