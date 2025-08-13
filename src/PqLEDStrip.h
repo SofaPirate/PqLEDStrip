@@ -65,7 +65,7 @@ namespace pq
         bool _needToShow = false;
         bool _needToFill = false;
         float _value;
-        float _normalizeStepValue;
+        float _pixelProportionSize;
         int _brightness = 255;
 
     private:
@@ -111,15 +111,9 @@ namespace pq
     private:
         void init()
         {
-            if (COUNT > 1)
-            {
-                _normalizeStepValue = 1.0 / (float(COUNT - 1));
-            }
-            else
-            {
-                _normalizeStepValue = 0;
-            }
+            _pixelProportionSize = 1.0f / COUNT;
         }
+
         CRGB getColor(float value) const
         {
             uint8_t frac8 = floor(value * 255.0f);
@@ -263,9 +257,10 @@ namespace pq
 
         void draw(AbstractField &field)
         {
-            for (int i = 0; i < COUNT; i++)
+            float proportion = _pixelProportionSize / 2;
+            for (int i = 0; i < COUNT; i++, proportion += _pixelProportionSize)
             {
-                float value = field.read(float(i) * _normalizeStepValue);
+                float value = field.read(proportion);
                 CRGB color = getColor(value);
                 _pixels[i] = color;
                 /*
