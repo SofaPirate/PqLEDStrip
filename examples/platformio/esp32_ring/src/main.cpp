@@ -6,7 +6,8 @@
 
 #include <PqLEDStrip.h>
 
-LEDStripWS281X<4, GRB, 16> strip{}; // <PIN RGB_ORDER COUNT>
+constexpr int NUM_LEDS = 16;
+LEDStripWS281X<4, GRB, NUM_LEDS> strip{}; // <PIN RGB_ORDER COUNT>
 
 const TProgmemPalette16 customPalette_p FL_PROGMEM =
     {
@@ -24,6 +25,7 @@ const TProgmemPalette16 customPalette_p FL_PROGMEM =
         CRGB::Red,
         CRGB::Gray,
         CRGB::Gray,
+        
         CRGB::Blue,
         CRGB::Blue,
         CRGB::Black,
@@ -33,17 +35,19 @@ TriangleWave rampWaveFast{0.05, 0}; // period of 50ms
 TriangleWave rampWaveSlow{3.0, 0};
 SineWave sineWaveSlow{3.0};
 
-TimeField<16> timeField{0.05}; // 16 samples over a period of 50ms
+TimeField<NUM_LEDS> timeField{rampWaveFast.period()}; // 16 samples over a period of 50ms
+TimeField<NUM_LEDS> rollingTimeField{2*rampWaveSlow.period()}; // 16 samples over a period of 3 seconds
 
 Metronome stripMetronome{0.05};
 
-Metronome modeMetronome{5.0};
+Metronome modeMetronome{200.0};
 
 int demoMode = 0;
-int demoModeCount = 5;
+int demoModeCount = 6;
 
 void begin()
 {
+    rollingTimeField.roll();
 }
 
 void step()
@@ -98,7 +102,14 @@ void step()
             strip.draw(timeField);
             rampWaveFast.phase(sineWaveSlow);
         }
-    } else if (demoMode == 4)
+    } else if (demoMode == 4) {
+        sineWaveSlow >> rollingTimeField;
+
+       if (rollingTimeField.triggered()) {
+            strip.unsetPalette();
+            strip.draw(rollingTimeField);
+       }
+    } else if (demoMode == 5)
     {
         // WE ARE UPDATING THE STRIP EVERY 50 MILLISECONDS
         if (stripMetronome)
