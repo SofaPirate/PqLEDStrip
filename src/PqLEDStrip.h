@@ -93,12 +93,12 @@ namespace pq
         const CHSVPalette256 *_hsvPalette256;
 
     protected:
-        void begin() override
+        virtual void begin() override
         {
             controller = &FastLED.addLeds<WS2812, PIN, ORDER>(_pixels, N_PIXELS);
         }
 
-        void step()
+        virtual void step() override
         {
             if (_needToShow)
             {
@@ -284,7 +284,7 @@ namespace pq
         }
 
         // PUT SHOULD BE A FORCED OVERRIDE
-        float put(float value) override
+        virtual float put(float value) override
         {
             _value = value;
 
@@ -297,7 +297,7 @@ namespace pq
         } // do nothing by default (read-only)
 
         /// Returns value in [0, 1].
-        float get() override { return _value; }
+        virtual float get() override { return _value; }
     };
 }
 #endif
