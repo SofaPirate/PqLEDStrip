@@ -149,6 +149,48 @@ namespace pq
             init();
         }
 
+        LEDStripWS281X(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
+        LEDStripWS281X(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
+        LEDStripWS281X(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
+        LEDStripWS281X(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
+        LEDStripWS281X(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
+        LEDStripWS281X(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
+        LEDStripWS281X(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
+        {
+            init();
+            palette(p, blend);
+        }
+
         void noPalette()
         {
             _paletteType = PaletteType::NONE;
@@ -203,58 +245,7 @@ namespace pq
             _paletteType = PaletteType::HSV256;
         }
 
-        LEDStripWS281X(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-
-        LEDStripWS281X(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-
-        LEDStripWS281X(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-
-        LEDStripWS281X(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-
-        LEDStripWS281X(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-
-        LEDStripWS281X(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-
-        LEDStripWS281X(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
-        {
-            init();
-            palette(p, blend);
-        }
-        /*
-                void palette(LEDStripPalette & palette) {
-                    _palette = & palette;
-                }
-
-                void noPalette() {
-                    _palette = NULL;
-                }
-        */
-
-        void draw(AbstractField &field)
+        void draw(AbstractField& field)
         {
             float proportion = _pixelProportionSize / 2;
             for (int i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
