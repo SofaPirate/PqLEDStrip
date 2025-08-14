@@ -43,10 +43,10 @@ Fills the entire strip using values from a Plaquette Map, rendered with the curr
 ### `void setPixel(int index, CRGB color)`
 Manually set the color of an individual pixel.
 
-### `size_t getCount()`
+### `size_t nPixels()`
 Get the count of the pixels.
 
-### `void setBrightness(float brightness)`
+### `void brightness(float brightness)`
 Set the strip brightness between 0.0 and 1.0.
 
 ## Palette Management

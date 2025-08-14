@@ -57,7 +57,7 @@ void step()
     {
         demoMode = (demoMode + 1) % demoModeCount;
         // RESET BRIGHTNESS TO 1.0 (default)
-        strip.setBrightness(1.0);
+        strip.brightness(1.0);
     }
 
     if (demoMode == 0)
@@ -88,7 +88,7 @@ void step()
         if (timeField.triggered())
         {
             strip.palette(RainbowColors_p);
-            strip.setBrightness( sineWaveSlow );
+            strip.brightness( sineWaveSlow );
             strip.draw(timeField);
             rampWaveFast.phase(0);
         }
@@ -115,8 +115,8 @@ void step()
         if (stripMetronome)
         {
             // SETTING PIXEL COLORS WITHOUT A MAP AND WITOUT A PALETTE :(
-            for ( int i =0; i < strip.getCount() ; i++) {
-                CRGB color = CRGB( floor(float(i)/float(strip.getCount())*255.0), 0, 0 );
+            for ( int i =0; i < strip.nPixels() ; i++) {
+                CRGB color = CRGB( floor(float(i)/float(strip.nPixels())*255.0), 0, 0 );
                 strip.setPixel(i,color);
             }
         }

@@ -54,12 +54,12 @@ namespace pq
 
     // =================================================
 
-    template <uint32_t PIN, EOrder ORDER, uint32_t COUNT>
+    template <uint32_t PIN, EOrder ORDER, uint32_t N_PIXELS>
     class LEDStripWS281X : public Unit
     {
     private:
-        const uint32_t _count = COUNT;
-        CRGB _pixels[COUNT];
+        const uint32_t _nPixels = N_PIXELS;
+        CRGB _pixels[N_PIXELS];
         int _pixelIndex = 0;
         CLEDController *controller;
         bool _needToShow = false;
@@ -95,12 +95,11 @@ namespace pq
     protected:
         void begin() override
         {
-            controller = &FastLED.addLeds<WS2812, PIN, ORDER>(_pixels, COUNT);
+            controller = &FastLED.addLeds<WS2812, PIN, ORDER>(_pixels, N_PIXELS);
         }
 
         void step()
         {
-
             if (_needToShow)
             {
                 _needToShow = false;
@@ -111,7 +110,7 @@ namespace pq
     private:
         void init()
         {
-            _pixelProportionSize = 1.0f / COUNT;
+            _pixelProportionSize = 1.0f / N_PIXELS;
         }
 
         CRGB getColor(float value) const
@@ -258,12 +257,12 @@ namespace pq
         void draw(AbstractField &field)
         {
             float proportion = _pixelProportionSize / 2;
-            for (int i = 0; i < COUNT; i++, proportion += _pixelProportionSize)
+            for (int i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
             {
                 float value = field.read(proportion);
                 CRGB color = getColor(value);
                 _pixels[i] = color;
-                /*
+                
                 Serial.print(i); Serial.print(" ");
                 Serial.print(value); Serial.print(" ");
                 Serial.print(color.r); Serial.print(" ");
@@ -281,12 +280,16 @@ namespace pq
             _needToShow = true;
         }
 
-        size_t getCount() {
-            return COUNT;
+        size_t nPixels() {
+            return N_PIXELS;
         }
 
-        void setBrightness(float f) {
-            _brightness = constrain( floor(f * 255.0f) , 0, 255);
+        void brightness(float f) {
+            _brightness = floor(constrain01(f) * 255.0f);
+        }
+
+        float brightness() const {
+            return _brightness / 255.0f;
         }
 
         // PUT SHOULD BE A FORCED OVERRIDE
@@ -295,7 +298,7 @@ namespace pq
             _value = value;
 
             CRGB color = getColor(_value);
-            fill_solid(_pixels, COUNT, color);
+            fill_solid(_pixels, N_PIXELS, color);
 
             _needToShow = true;
 
