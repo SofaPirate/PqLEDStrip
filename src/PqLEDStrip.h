@@ -150,54 +150,54 @@ namespace pq
             init();
         }
 
-        void unsetPalette()
+        void noPalette()
         {
             _paletteType = PaletteType::NONE;
         }
 
-        void setPalette(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
+        void palette(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             _palette16 = &p;
             _blend = blend;
             _paletteType = PaletteType::PALETTE16;
         }
 
-        void setPalette(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
+        void palette(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
         {
             _palette32 = &p;
             _blend = blend;
             _paletteType = PaletteType::PALETTE32;
         }
 
-        void setPalette(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
+        void palette(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
         {
             _palette256 = &p;
             _blend = blend;
             _paletteType = PaletteType::PALETTE256;
         }
 
-        void setPalette(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
+        void palette(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             _progmemPalette16 = &p;
             _blend = blend;
             _paletteType = PaletteType::PROGMEM16;
         }
 
-        void setPalette(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
+        void palette(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             _hsvPalette16 = &p;
             _blend = blend;
             _paletteType = PaletteType::HSV16;
         }
 
-        void setPalette(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
+        void palette(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
         {
             _hsvPalette32 = &p;
             _blend = blend;
             _paletteType = PaletteType::HSV32;
         }
 
-        void setPalette(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
+        void palette(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
         {
             _hsvPalette256 = &p;
             _blend = blend;
@@ -207,50 +207,50 @@ namespace pq
         LEDStripWS281X(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
 
         LEDStripWS281X(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
 
         LEDStripWS281X(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
 
         LEDStripWS281X(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
 
         LEDStripWS281X(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
 
         LEDStripWS281X(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
 
         LEDStripWS281X(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
         {
             init();
-            setPalette(p, blend);
+            palette(p, blend);
         }
         /*
-                void setPalette(LEDStripPalette & palette) {
+                void palette(LEDStripPalette & palette) {
                     _palette = & palette;
                 }
 
-                void unsetPalette() {
+                void noPalette() {
                     _palette = NULL;
                 }
         */

@@ -51,10 +51,10 @@ Set the strip brightness between 0.0 and 1.0.
 
 ## Palette Management
 
-### `void unsetPalette()`
+### `void noPalette()`
 Removes the currently assigned palette. Default fallback is grayscale gradient.
 
-### `void setPalette(const palette &p, TBlendType blend = LINEARBLEND)`
+### `void palette(const palette &p, TBlendType blend = LINEARBLEND)`
 Set a palette.
 - `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
 - `blend` is either `LINEARBLEND` or `NOBLEND`.

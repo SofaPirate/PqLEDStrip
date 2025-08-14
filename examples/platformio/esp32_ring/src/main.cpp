@@ -65,7 +65,7 @@ void step()
         // WE ARE UPDATING THE STRIP EVERY 50 MILLISECONDS
         if (stripMetronome)
         {
-            strip.setPalette(CloudColors_p);
+            strip.palette(CloudColors_p);
             sineWaveSlow >> strip;
         }
     }
@@ -76,7 +76,7 @@ void step()
 
         if (timeField.triggered())
         {
-            strip.unsetPalette();
+            strip.noPalette();
             strip.draw(timeField);
             rampWaveFast.phase(rampWaveSlow);
         }
@@ -87,7 +87,7 @@ void step()
 
         if (timeField.triggered())
         {
-            strip.setPalette(RainbowColors_p);
+            strip.palette(RainbowColors_p);
             strip.setBrightness( sineWaveSlow );
             strip.draw(timeField);
             rampWaveFast.phase(0);
@@ -98,7 +98,7 @@ void step()
 
         if (timeField.triggered())
         {
-            strip.setPalette(customPalette_p);
+            strip.palette(customPalette_p);
             strip.draw(timeField);
             rampWaveFast.phase(sineWaveSlow);
         }
@@ -106,7 +106,7 @@ void step()
         sineWaveSlow >> rollingTimeField;
 
        if (rollingTimeField.triggered()) {
-            strip.unsetPalette();
+            strip.noPalette();
             strip.draw(rollingTimeField);
        }
     } else if (demoMode == 5)
