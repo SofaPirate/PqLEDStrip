@@ -248,7 +248,8 @@ namespace pq
                 float value = field.read(proportion);
                 CRGB color = getColor(value);
                 _pixels[i] = color;
-                
+
+                /*
                 Serial.print(i); Serial.print(" ");
                 Serial.print(value); Serial.print(" ");
                 Serial.print(color.r); Serial.print(" ");
