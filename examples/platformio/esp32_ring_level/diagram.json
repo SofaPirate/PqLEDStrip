@@ -16,14 +16,7 @@
       "id": "text1",
       "top": 115.2,
       "left": -105.6,
-      "attrs": { "text": "Left Skew" }
-    },
-    {
-      "type": "wokwi-ntc-temperature-sensor",
-      "id": "ntc1",
-      "top": -170.2,
-      "left": -58.2,
-      "attrs": {}
+      "attrs": { "text": "Ramp Width" }
     },
     {
       "type": "wokwi-slide-potentiometer",
@@ -37,13 +30,13 @@
       "id": "text2",
       "top": 115.2,
       "left": 124.8,
-      "attrs": { "text": "Right Skew" }
+      "attrs": { "text": "Ramp Shift" }
     },
     {
       "type": "wokwi-text",
       "id": "text3",
-      "top": -192,
-      "left": -19.2,
+      "top": -307.2,
+      "left": 19.2,
       "attrs": { "text": "Sensor" }
     },
     {
@@ -60,14 +53,19 @@
       "top": 28.8,
       "left": -124.8,
       "attrs": { "text": "Falling <-> Rising" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot3",
+      "top": -249.6,
+      "left": -10.4,
+      "rotate": 90,
+      "attrs": { "travelLength": "30" }
     }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "ntc1:VCC", "esp:3V3", "red", [ "h0" ] ],
-    [ "ntc1:GND", "esp:GND.2", "black", [ "h163.2" ] ],
-    [ "ntc1:OUT", "esp:34", "orange", [ "h28.8", "v86.3" ] ],
     [ "pot2:VCC", "esp:3V3", "red", [ "h-9.6", "v-230.4" ] ],
     [ "pot2:SIG", "esp:35", "violet", [ "h-28.8", "v-221.6", "h307.05" ] ],
     [ "pot2:GND", "pot1:GND", "black", [ "v76.8", "h245.2", "v-76.8" ] ],
@@ -78,7 +76,10 @@
     [ "ring1:VCC", "esp:5V", "red", [ "v220.8", "h-192", "v-19.2", "h19.2" ] ],
     [ "ring1:DIN", "esp:4", "purple", [ "v0" ] ],
     [ "sw1:2", "esp:12", "gray", [ "v9.6", "h86.5", "v-76.8" ] ],
-    [ "sw1:3", "esp:GND.1", "black", [ "h115.4", "v-57.6" ] ]
+    [ "sw1:3", "esp:GND.1", "black", [ "h115.4", "v-57.6" ] ],
+    [ "pot3:VCC", "esp:3V3", "red", [ "v-19.2", "h28.8" ] ],
+    [ "pot3:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "pot3:SIG", "esp:34", "yellow", [ "v-19.2", "h-85.6", "v268.8" ] ]
   ],
   "dependencies": {}
 }
