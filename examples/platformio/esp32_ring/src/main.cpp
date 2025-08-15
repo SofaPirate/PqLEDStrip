@@ -74,7 +74,7 @@ void step()
 
         rampWaveFast >> timeField;
 
-        if (timeField.triggered())
+        if (timeField.updated())
         {
             strip.noPalette();
             strip.draw(timeField);
@@ -85,7 +85,7 @@ void step()
     {
         rampWaveFast >> timeField;
 
-        if (timeField.triggered())
+        if (timeField.updated())
         {
             strip.palette(RainbowColors_p);
             strip.brightness( sineWaveSlow );
@@ -96,7 +96,7 @@ void step()
     {
         rampWaveFast >> timeField;
 
-        if (timeField.triggered())
+        if (timeField.updated())
         {
             strip.palette(customPalette_p);
             strip.draw(timeField);
@@ -105,7 +105,7 @@ void step()
     } else if (demoMode == 4) {
         sineWaveSlow >> rollingTimeField;
 
-       if (rollingTimeField.triggered()) {
+       if (rollingTimeField.updated()) {
             strip.noPalette();
             strip.draw(rollingTimeField);
        }
