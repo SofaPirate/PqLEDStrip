@@ -12,11 +12,11 @@ LEDStripWS281X<4, GRB, 16> strip{}; // <PIN RGB_ORDER COUNT>
 // Level field.
 LevelField levelField;
 
-// Sensor (temperature).
+// Sensor (potentiometer).
 AnalogIn sensor(34, INVERTED);
 
-// Re-scaler (so that values span complete range).
-MinMaxScaler sensorScaler;
+// Wave.
+Wave wave(SINE);
 
 // Potentiometers.
 AnalogIn potRampWidth(35);
@@ -25,26 +25,39 @@ AnalogIn potRampShift(32);
 // Switch for falling vs rising.
 DigitalIn switchRising(12, INTERNAL_PULLUP);
 
+// Switch for direct vs wave.
+DigitalIn switchWave(14, INTERNAL_PULLUP);
+
 // Metronome updating the strip.
 Metronome stripMetronome{0.05};
 
 void begin()
 {
+    // Set palette. Use NOBLEND to prevent wrap-around effect.
+    strip.palette(HeatColors_p, NOBLEND);
 }
 
 void step()
 {
-    // Rescale sensor and send to level field.
-    sensor >> sensorScaler >> levelField;
+    // Send sensor value to level field.
+    if (switchWave) {
+        // Use wave modulated with sensor.
+        wave.period(sensor.mapTo(10, 1));
+        wave >> levelField;
+    }
+    else {
+        // Use sensor directly.
+        sensor >> levelField;
+    }
 
     if (stripMetronome)
     {
         // Update level field parameters.
-        levelField.rampWidth(potRampWidth);
+        levelField.rampWidth(potRampWidth.mapTo(0, 0.5));
         levelField.rampShift(potRampShift);
         levelField.rising(switchRising);
 
-//            strip.palette(CloudColors_p);
+        // Draw field on the strip.
         strip.draw(levelField);
-    }
+   }
 }

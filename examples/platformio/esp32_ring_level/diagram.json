@@ -35,8 +35,8 @@
     {
       "type": "wokwi-text",
       "id": "text3",
-      "top": -307.2,
-      "left": 19.2,
+      "top": -297.6,
+      "left": -67.2,
       "attrs": { "text": "Sensor" }
     },
     {
@@ -51,16 +51,24 @@
       "type": "wokwi-text",
       "id": "text4",
       "top": 28.8,
-      "left": -124.8,
+      "left": -134.4,
       "attrs": { "text": "Falling <-> Rising" }
     },
     {
       "type": "wokwi-slide-potentiometer",
       "id": "pot3",
       "top": -249.6,
-      "left": -10.4,
+      "left": -96.8,
       "rotate": 90,
       "attrs": { "travelLength": "30" }
+    },
+    { "type": "wokwi-slide-switch", "id": "sw2", "top": -197.2, "left": 118.3, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "text5",
+      "top": -220.8,
+      "left": 76.8,
+      "attrs": { "text": "Direct <-> Wave" }
     }
   ],
   "connections": [
@@ -77,9 +85,11 @@
     [ "ring1:DIN", "esp:4", "purple", [ "v0" ] ],
     [ "sw1:2", "esp:12", "gray", [ "v9.6", "h86.5", "v-76.8" ] ],
     [ "sw1:3", "esp:GND.1", "black", [ "h115.4", "v-57.6" ] ],
-    [ "pot3:VCC", "esp:3V3", "red", [ "v-19.2", "h28.8" ] ],
+    [ "pot3:VCC", "esp:3V3", "red", [ "v-19.2", "h48", "v240" ] ],
     [ "pot3:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "pot3:SIG", "esp:34", "yellow", [ "v-19.2", "h-85.6", "v268.8" ] ]
+    [ "pot3:SIG", "esp:34", "yellow", [ "v-19.2", "h-85.6", "v268.8" ] ],
+    [ "sw2:3", "esp:GND.2", "black", [ "v19.2", "h105.8" ] ],
+    [ "sw2:2", "esp:14", "gray", [ "v0" ] ]
   ],
   "dependencies": {}
 }
