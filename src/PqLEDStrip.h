@@ -22,13 +22,6 @@
 #include <PlaquetteLib.h>
 #include <FastLED.h>
 
-/* TODO
-
-NEED AN ASSERTION FOR COUNT > 0
-
-
-*/
-
 namespace pq
 {
 
@@ -57,6 +50,7 @@ namespace pq
     template <uint32_t PIN, EOrder ORDER, uint32_t N_PIXELS>
     class LEDStripWS281X : public Unit
     {
+        static_assert(N_PIXELS > 0, "N_PIXELS must be greater than 0");
     private:
         const uint32_t _nPixels = N_PIXELS;
         CRGB _pixels[N_PIXELS];
