@@ -19,8 +19,8 @@ AnalogIn sensor(34, INVERTED);
 MinMaxScaler sensorScaler;
 
 // Potentiometers.
-AnalogIn potLeftSkew(35);
-AnalogIn potRightSkew(32);
+AnalogIn potRampWidth(35);
+AnalogIn potRampShift(32);
 
 // Switch for falling vs rising.
 DigitalIn switchRising(12, INTERNAL_PULLUP);
@@ -34,17 +34,17 @@ void begin()
 
 void step()
 {
+    // Rescale sensor and send to level field.
     sensor >> sensorScaler >> levelField;
 
     if (stripMetronome)
     {
         // Update level field parameters.
-        levelField.leftSkew(potLeftSkew);
-        levelField.rightSkew(potRightSkew);
-        if (switchRising) levelField.rising();
-        else levelField.falling();
+        levelField.rampWidth(potRampWidth);
+        levelField.rampShift(potRampShift);
+        levelField.rising(switchRising);
 
-//            strip.setPalette(CloudColors_p);
+//            strip.palette(CloudColors_p);
         strip.draw(levelField);
     }
 }
