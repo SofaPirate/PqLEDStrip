@@ -265,10 +265,15 @@ namespace pq
             _needToShow = true;
         }
 
-        size_t nPixels() {
-            return N_PIXELS;
-        }
+        /** 
+         * Returns the color of the pixel/LED at the given index
+         * @param index the index of the pixel/LED
+         * @return the color
+         */
+        CRGB getPixel(int index) { return _pixels[index]; }
 
+        /// Returns the number of pixels
+        size_t nPixels() { return N_PIXELS;}
         void brightness(float f) {
             _brightness = floor(constrain01(f) * 255.0f);
         }
