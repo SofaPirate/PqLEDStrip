@@ -94,6 +94,7 @@ namespace pq
 
         virtual void step() override
         {
+            // Show LEDs only when needed.
             if (_needToShow)
             {
                 _needToShow = false;
@@ -259,6 +260,11 @@ namespace pq
             _needToShow = true;
         }
 
+        /**
+         * Sets the color of the pixel/LED at the given index
+         * @param index the index of the pixel/LED
+         * @param color the color
+         */
         void setPixel(int index, CRGB color)
         {
             _pixels[index] = color;
@@ -274,10 +280,16 @@ namespace pq
 
         /// Returns the number of pixels
         size_t nPixels() { return N_PIXELS;}
+
+        /**
+         * Sets the brightness of the strip.
+         * @param f brightness in [0, 1]
+         */
         void brightness(float f) {
             _brightness = floor(constrain01(f) * 255.0f);
         }
 
+        /// Returns the brightness of the strip.
         float brightness() const {
             return _brightness / 255.0f;
         }
