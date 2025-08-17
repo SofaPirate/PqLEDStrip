@@ -55,7 +55,7 @@ void step()
         // Update level field parameters.
         levelField.rampWidth(potRampWidth.mapTo(0, 0.5));
         levelField.rampShift(potRampShift);
-        levelField.rising(switchRising);
+        levelField.setRising(switchRising);
 
         // Draw field on the strip.
         strip.draw(levelField);
