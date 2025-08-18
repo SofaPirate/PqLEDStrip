@@ -19,10 +19,11 @@ AnalogIn sensor(34, INVERTED);
 Wave wave(SINE);
 
 // Potentiometers.
-AnalogIn potRampWidth(35);
-AnalogIn potRampShift(32);
+AnalogIn potRampWidth(35); // controls ramp width
+AnalogIn potRampShift(32); // controls ramp shift
+AnalogIn potCenter(33); // controls center
 
-// Switch for falling vs rising.
+// Switch for rising vs falling.
 DigitalIn switchRising(12, INTERNAL_PULLUP);
 
 // Switch for direct vs wave.
@@ -50,11 +51,13 @@ void step()
         sensor >> levelField;
     }
 
+    // Metronome tick event.
     if (stripMetronome)
     {
         // Update level field parameters.
         levelField.rampWidth(potRampWidth.mapTo(0, 0.5));
         levelField.rampShift(potRampShift);
+        levelField.center(potCenter);
         levelField.setRising(switchRising);
 
         // Draw field on the strip.
