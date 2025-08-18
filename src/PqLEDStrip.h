@@ -110,7 +110,8 @@ namespace pq
 
         CRGB getColor(float value) const
         {
-            uint8_t frac8 = floor(value * 255.0f);
+            value *= 255;
+            uint8_t frac8 = round(value);
 
             switch (_paletteType)
             {
