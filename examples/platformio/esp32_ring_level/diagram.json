@@ -46,11 +46,11 @@
       "left": 250.79,
       "attrs": { "pixels": "16" }
     },
-    { "type": "wokwi-slide-switch", "id": "sw1", "top": 62, "left": -83.3, "attrs": {} },
+    { "type": "wokwi-slide-switch", "id": "sw1", "top": 71.6, "left": -83.3, "attrs": {} },
     {
       "type": "wokwi-text",
       "id": "text4",
-      "top": 28.8,
+      "top": 48,
       "left": -134.4,
       "attrs": { "text": "Falling <-> Rising" }
     },
@@ -83,30 +83,40 @@
       "top": 240,
       "left": -115.2,
       "attrs": { "text": "Center" }
+    },
+    { "type": "wokwi-slide-switch", "id": "sw3", "top": 4.4, "left": -83.3, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "text7",
+      "top": -19.2,
+      "left": -153.6,
+      "attrs": { "text": "Threshold <-> Bump" }
     }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "pot2:VCC", "esp:3V3", "red", [ "h-9.6", "v-230.4" ] ],
-    [ "pot2:SIG", "esp:35", "violet", [ "h-28.8", "v-221.6", "h307.05" ] ],
+    [ "pot2:VCC", "esp:3V3", "red", [ "h-96", "v-249.6" ] ],
+    [ "pot2:SIG", "esp:35", "violet", [ "h-38.4", "v-221.6" ] ],
     [ "pot2:GND", "pot1:GND", "black", [ "v76.8", "h245.2", "v-76.8" ] ],
-    [ "pot1:SIG", "esp:32", "blue", [ "h-9.6", "v-192.8" ] ],
     [ "pot1:GND", "esp:GND.2", "black", [ "v0" ] ],
     [ "pot1:VCC", "pot2:VCC", "red", [ "h-19.2", "v67.2", "h-230.4", "v-67.2" ] ],
     [ "ring1:GND", "esp:GND.2", "black", [ "v0" ] ],
     [ "ring1:VCC", "esp:5V", "red", [ "v220.8", "h-192", "v-19.2", "h19.2" ] ],
     [ "ring1:DIN", "esp:4", "purple", [ "v0" ] ],
-    [ "sw1:2", "esp:12", "gray", [ "v9.6", "h86.5", "v-76.8" ] ],
+    [ "sw1:2", "esp:12", "cyan", [ "v9.6", "h105.7", "v-76.8" ] ],
     [ "sw1:3", "esp:GND.1", "black", [ "h115.4", "v-57.6" ] ],
     [ "pot3:VCC", "esp:3V3", "red", [ "v-19.2", "h48", "v240" ] ],
     [ "pot3:GND", "esp:GND.1", "black", [ "v0" ] ],
     [ "pot3:SIG", "esp:34", "yellow", [ "v-19.2", "h-85.6", "v268.8" ] ],
     [ "sw2:3", "esp:GND.2", "black", [ "v19.2", "h105.8" ] ],
-    [ "sw2:2", "esp:14", "gray", [ "v0" ] ],
     [ "pot4:VCC", "pot2:VCC", "red", [ "h-19.2", "v-115.2" ] ],
     [ "pot4:GND", "pot2:GND", "black", [ "v0" ] ],
-    [ "pot4:SIG", "esp:33", "green", [ "h-48", "v-298.4" ] ]
+    [ "sw3:3", "esp:GND.1", "black", [ "v0" ] ],
+    [ "sw3:2", "esp:14", "cyan", [ "v9.6", "h67.3", "v-28.8" ] ],
+    [ "sw2:2", "esp:27", "blue", [ "v0" ] ],
+    [ "pot4:SIG", "esp:32", "violet", [ "h-48", "v-336.8" ] ],
+    [ "pot1:SIG", "esp:33", "violet", [ "h-9.6", "v-202.4" ] ]
   ],
   "dependencies": {}
 }
