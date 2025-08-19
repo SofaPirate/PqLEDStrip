@@ -31,23 +31,23 @@ const TProgmemPalette16 customPalette_p FL_PROGMEM =
         CRGB::Black,
         CRGB::Black};
 
-TriangleWave rampWaveFast{0.05, 0}; // period of 50ms
-TriangleWave rampWaveSlow{3.0, 0};
+TriangleWave rampWaveFast{0.05}; // period of 50ms
+TriangleWave rampWaveSlow{2.0, 0};
 SineWave sineWaveSlow{3.0};
 
-TimeField<NUM_LEDS> timeField{rampWaveFast.period()}; // 16 samples over a period of 50ms
-TimeField<NUM_LEDS> rollingTimeField{2*rampWaveSlow.period()}; // 16 samples over a period of 3 seconds
+TimeSliceField<NUM_LEDS> baseTimeSliceField{rampWaveFast.period()}; // 16 samples over a period of 50ms
+TimeSliceField<NUM_LEDS> rollingTimeSliceField{2*rampWaveSlow.period()}; // 16 samples over a period of 3 seconds
 
-Metronome stripMetronome{0.05};
+Metronome stripMetronome{0.1};
 
-Metronome modeMetronome{200.0};
+Metronome modeMetronome{5.0};
 
 int demoMode = 0;
 int demoModeCount = 6;
 
 void begin()
 {
-    rollingTimeField.roll();
+    rollingTimeSliceField.rolling();
 }
 
 void step()
@@ -71,43 +71,43 @@ void step()
     }
     else if (demoMode == 1)
     {
+        rampWaveFast >> baseTimeSliceField;
 
-        rampWaveFast >> timeField;
-
-        if (timeField.updated())
+        if (baseTimeSliceField.updated())
         {
             strip.noPalette();
-            strip.draw(timeField);
+            strip.draw(baseTimeSliceField);
             rampWaveFast.phase(rampWaveSlow);
         }
     }
     else if (demoMode == 2)
     {
-        rampWaveFast >> timeField;
+        rampWaveFast >> baseTimeSliceField;
 
-        if (timeField.updated())
+        if (baseTimeSliceField.updated())
         {
             strip.palette(RainbowColors_p);
-            strip.brightness( sineWaveSlow );
-            strip.draw(timeField);
+            strip.brightness(sineWaveSlow);
+            strip.draw(baseTimeSliceField);
             rampWaveFast.phase(0);
         }
     } else if (demoMode == 3)
     {
-        rampWaveFast >> timeField;
+        rampWaveFast >> baseTimeSliceField;
 
-        if (timeField.updated())
+        if (baseTimeSliceField.updated())
         {
             strip.palette(customPalette_p);
-            strip.draw(timeField);
+            strip.draw(baseTimeSliceField);
             rampWaveFast.phase(sineWaveSlow);
+
         }
     } else if (demoMode == 4) {
-        sineWaveSlow >> rollingTimeField;
+        sineWaveSlow >> rollingTimeSliceField;
 
-       if (rollingTimeField.updated()) {
+       if (rollingTimeSliceField.updated()) {
             strip.noPalette();
-            strip.draw(rollingTimeField);
+            strip.draw(rollingTimeSliceField);
        }
     } else if (demoMode == 5)
     {
