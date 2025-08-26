@@ -1,6 +1,12 @@
-
-// THIS EXAMPLE IS PSEUDOCODE AND DOES NOT COMPILE
-
+/**
+ * esp32_ring_pivot
+ *
+ * Shows different ways to control an LED strip using PqLedStrip library and PivotField.
+ *
+ * Created in 2025 by Sofian Audry
+ *
+ * This example code is in the public domain.
+ */
 #include <Plaquette.h>
 #include <FastLED.h>
 
@@ -9,11 +15,11 @@
 // The LED strip.
 LEDStripWS281X<4, GRB, 16> strip{}; // <PIN RGB_ORDER COUNT>
 
-// Level field.
+// Pivot field.
 PivotField pivotField;
 
 // Sensor (potentiometer).
-AnalogIn sensor(34, INVERTED);
+AnalogIn sensor(34);
 
 // Wave.
 Wave wave(SINE);

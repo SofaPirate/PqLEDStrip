@@ -1,6 +1,12 @@
-
-// THIS EXAMPLE IS PSEUDOCODE AND DOES NOT COMPILE
-
+/**
+ * esp32_ring_time_slice
+ *
+ * Shows different ways to control an LED strip using PqLedStrip library and TimeSliceField.
+ *
+ * Created in 2025 by Thomas O. Fredericks
+ *
+ * This example code is in the public domain.
+ */
 #include <Plaquette.h>
 #include <FastLED.h>
 
