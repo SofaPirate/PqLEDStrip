@@ -10,7 +10,7 @@
 LEDStripWS281X<4, GRB, 16> strip{}; // <PIN RGB_ORDER COUNT>
 
 // Level field.
-LevelField levelField;
+PivotField pivotField;
 
 // Sensor (potentiometer).
 AnalogIn sensor(34, INVERTED);
@@ -45,28 +45,28 @@ void step()
     if (switchWave) {
         // Use wave modulated with sensor.
         wave.period(sensor.mapTo(10, 1));
-        wave >> levelField;
+        wave >> pivotField;
     }
     else {
         // Use sensor directly.
-        sensor >> levelField;
+        sensor >> pivotField;
     }
 
     // Metronome tick event.
     if (stripMetronome)
     {
         // Update level field parameters.
-        levelField.rampWidth(potRampWidth.mapTo(0, 0.5));
-        levelField.rampShift(potRampShift);
-        levelField.bumpWidth(0.25);
+        pivotField.rampWidth(potRampWidth.mapTo(0, 0.5));
+        pivotField.rampShift(potRampShift);
+        pivotField.bumpWidth(0.25);
 
-        levelField.center(potCenter);
+        pivotField.center(potCenter);
         if (switchBump)
-            levelField.mode(switchRising ? LEVEL_BUMP : LEVEL_NOTCH);
+            pivotField.mode(switchRising ? PIVOT_BUMP : PIVOT_NOTCH);
         else
-            levelField.mode(switchRising ? LEVEL_RISING : LEVEL_FALLING); // setRising(switchRising);
+            pivotField.mode(switchRising ? PIVOT_RISING : PIVOT_FALLING); // setRising(switchRising);
 
         // Draw field on the strip.
-        strip.draw(levelField);
+        strip.draw(pivotField);
    }
 }
