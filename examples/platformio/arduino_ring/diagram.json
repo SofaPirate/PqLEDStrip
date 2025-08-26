@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "author": "Sofian Audry",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": -57, "left": -67.8, "attrs": {} },
+    {
+      "type": "wokwi-led-ring",
+      "id": "ring1",
+      "top": -229.76,
+      "left": 317.99,
+      "attrs": { "pixels": "16" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": -211.8,
+      "left": 99,
+      "rotate": 90,
+      "attrs": { "color": "blue", "xray": "1" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot1",
+      "top": 1,
+      "left": 229.1,
+      "rotate": 270,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "ring1:VCC", "uno:5V", "red", [ "v268.8", "h-291.8" ] ],
+    [ "ring1:GND", "uno:GND.2", "black", [ "v249.6", "h-272.7" ] ],
+    [ "ring1:DIN", "uno:6", "blue", [ "v9.6", "h-262.9" ] ],
+    [ "btn1:1.r", "uno:2", "orange", [ "v9.8", "h24.7" ] ],
+    [ "btn1:2.r", "uno:GND.1", "black", [ "v9.8", "h-77.3" ] ],
+    [ "pot1:GND", "uno:GND.3", "black", [ "h28.8", "v115.2", "h-215.2" ] ],
+    [ "pot1:VCC", "uno:AREF", "red", [ "h19.2", "v-105.6", "h-278.6" ] ],
+    [ "pot1:SIG", "uno:A0", "gold", [ "h19.2", "v115.6", "h-176.6" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+board = "arduino:uno"
+elf = ".pio/build/arduino-uno/firmware.elf"
+firmware = ".pio/build/arduino-uno/firmware.elf"
