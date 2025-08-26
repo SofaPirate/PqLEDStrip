@@ -49,6 +49,18 @@ enum AnimationMode {
 
 AnimationMode currentMode = MODE_DEFAULT;
 
+// Gradient palette.
+// The 1st column specifies where along the palette's indicies (0-255), 
+// where the gradient should be anchored. The other 3 columns are RGB values.
+// See https://github.com/FastLED/FastLED/wiki/Gradient-color-palettes
+DEFINE_GRADIENT_PALETTE( customGradient_gp ) {
+  0, /* 0%   */     0,     0,     0,   // black
+128, /* 50%  */   255,     0,     0,   // red
+224, /* 88%  */   255,   255,     0,   // bright yellow
+255, /* 100% */   255,   255,   255 }; // full white
+
+CRGBPalette16 customGradient_p = customGradient_gp;
+
 void startCurrentMode();
 
 void begin()
@@ -61,6 +73,9 @@ void begin()
     // Set palette.
     // List of palettes: https://fastled.io/docs/d3/d4f/group___predefined_palettes.html
     strip.palette(HeatColors_p, LINEARBLEND_NOWRAP);
+
+    // You can also define a custom palette using the DEFINE_GRADIENT_PALETTE macro (see above).
+    //strip.palette(customGradient_p, LINEARBLEND_NOWRAP);
 }
 
 void step()
