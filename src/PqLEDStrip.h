@@ -244,7 +244,7 @@ namespace pq
         void draw(AbstractField& field)
         {
             float proportion = _pixelProportionSize / 2;
-            for (int i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
+            for (uint32_t i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
             {
                 float value = field.at(proportion);
                 CRGB color = getColor(value);
