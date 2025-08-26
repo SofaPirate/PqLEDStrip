@@ -246,7 +246,7 @@ namespace pq
             float proportion = _pixelProportionSize / 2;
             for (int i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
             {
-                float value = field.read(proportion);
+                float value = field.at(proportion);
                 CRGB color = getColor(value);
                 _pixels[i] = color;
 
