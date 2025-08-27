@@ -57,7 +57,7 @@ Removes the currently assigned palette. Default fallback is grayscale gradient.
 ### `void palette(const palette &p, TBlendType blend = LINEARBLEND)`
 Set a palette.
 - `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
-- `blend` is either `LINEARBLEND` or `NOBLEND`.
+- `blend` is either `LINEARBLEND`, `LINEARBLEND_NOWRAP`, or `NOBLEND`.
 
 ## Best practices
 Usually, your `loop()` is running very fast (more than 1000 times per second). Now, an LED strip does not need to (and cannot) be updated so fast. So you **must update the LED strip at a slower interval**. Here are two techniques: one with a `Plaquette Metronome` and another with a Plaquette `TimeSliceField`.
