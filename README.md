@@ -94,14 +94,14 @@ A `TimeSliceField` not only collects data over time, but also spreads the proces
 
 This avoids a performance spike from computing all samples in a single burst right before updating the strip. Instead, a small amount of work is done each loop, keeping performance smooth and consistent.
 
-In *global space*, declare a `TimeSliceField` that contains 16 samples (the number of samples does **not** have to match the number of puxels) that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
+In *global space*, declare a `TimeSliceField` that contains 16 samples (the number of samples does **not** have to match the number of pixels) that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
 ```cpp
 TimeSliceField<16> timeSliceField{0.05}; // 16 samples over a period of 50 ms
 ```
 
 In your `loop()`, feed any float-based data source (such as a Wave, Ramp, or `analogIn`) into the `TimeSliceField`. Then, check if the `TimeSliceField` has triggered (i.e., its time period has elapsed), and instruct the strip to draw using the collected samples:
 ```cpp
-SineWave >> timeSliceField;
+sineWave >> timeSliceField;
 
 if (timeSliceField.updated()) // 50 milliseconds have passed
 {
@@ -111,7 +111,7 @@ if (timeSliceField.updated()) // 50 milliseconds have passed
 
 The `TimeSliceField` collects 16 samples over a 50 ms period (e.g., from a wave or analog input). After 50 ms, it triggers once and uses the collected samples to update the LED strip.
 
-To capture a full cycle of a waveform (like a SineWave), the waveform's period should match the `TimeSliceField`'s period — in this case, 50 ms.
+To capture a full cycle of a waveform (like a Wave), the waveform's period should match the `TimeSliceField`'s period — in this case, 50 ms.
 
 ```text
 loop():      [ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ]...
