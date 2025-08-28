@@ -241,9 +241,18 @@ namespace pq
             _paletteType = PaletteType::HSV256;
         }
 
-        void draw(AbstractField& field)
+        void draw(AbstractField& field, bool wrap = false)
         {
-            float proportion = _pixelProportionSize / 2;
+            float pixelProportionSize;
+            float proportion;
+            if (wrap) {
+                pixelProportionSize = 1.0f / N_PIXELS;
+                proportion = pixelProportionSize / 2;            
+            }
+            else {
+                pixelProportionSize = 1.0f / min(N_PIXELS-1, 1);
+                proportion = 0;
+            }
             for (uint32_t i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
             {
                 float value = field.at(proportion);

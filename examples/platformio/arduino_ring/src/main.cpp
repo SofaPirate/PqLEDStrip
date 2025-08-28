@@ -14,7 +14,7 @@
 const int NUM_LEDS = 16;
 
 // You can change this to true to enable the wave instead of potentiometer raw value.
-const bool USE_WAVE = false;
+const bool USE_WAVE = true;
 
 // The LED strip.
 LEDStripWS281X<6, GRB, NUM_LEDS> strip{}; // <PIN RGB_ORDER COUNT>
@@ -72,7 +72,7 @@ void begin()
 
     // Set palette.
     // List of palettes: https://fastled.io/docs/d3/d4f/group___predefined_palettes.html
-    strip.palette(HeatColors_p, LINEARBLEND_NOWRAP);
+    strip.palette(HeatColors_p, NOBLEND);
 
     // You can also define a custom palette using the DEFINE_GRADIENT_PALETTE macro (see above).
     //strip.palette(customGradient_p, LINEARBLEND_NOWRAP);
@@ -135,7 +135,7 @@ void step()
         signal >> timeSliceField;
 
         if (timeSliceField.updated()) {
-            strip.draw(timeSliceField);
+            strip.draw(timeSliceField, true);
         }
     }
 }
