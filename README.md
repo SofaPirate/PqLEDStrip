@@ -7,10 +7,10 @@ LED strip library for Plaquette.
 ## Introduction
 
 - `PqLEDStrip` use the `FastLED` library for LED control.
-- Do not call `FastLED.show()` as you might be used to. `PqLEDStrip` manages this automagically for you.
-- Try *not* to set the value of the pixels every iteration of the loop, but either with a `Plaquette TimeSlice Map` or on an interval set with a `Plaquette Metronome`. 
+- Do *not* call `FastLED.show()` as you might be used to. `PqLEDStrip` manages this automagically for you.
+- Try *not* to set the value of the pixels every iteration of the loop, but either with a Plaquette field (eg. `PivotField`, `TimeSliceField`) or on an interval set with a Plaquette `Metronome`. 
 
-## Example declaration
+## Example Declaration
 
 `LEDStripWS281X<3, RGB, 16> myStrip()`
 
@@ -33,12 +33,12 @@ No palette is set initially. Default fallback is grayscale gradient.
 Creates a strip and sets a palette.
 
 - `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
-- `blend` is either `LINEARBLEND` or `NOBLEND`.
+- `blend` is either `LINEARBLEND`, `LINEARBLEND_NOWRAP`, or `NOBLEND`.
 
 ## Pixel  Management
 
 ### `void draw(AbstractField& field)`
-Fills the entire strip using values from a Plaquette field, rendered with the current palette. See below on how to use with a `TimeField`.
+Fills the entire strip using values from a Plaquette field, rendered with the current palette. See below on how to use with a `TimeSliceField`.
 
 ### `void setPixel(int index, CRGB color)`
 Manually set the color of an individual pixel.
@@ -57,10 +57,10 @@ Removes the currently assigned palette. Default fallback is grayscale gradient.
 ### `void palette(const palette &p, TBlendType blend = LINEARBLEND)`
 Set a palette.
 - `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
-- `blend` is either `LINEARBLEND` or `NOBLEND`.
+- `blend` is either `LINEARBLEND`, `LINEARBLEND_NOWRAP`, or `NOBLEND`.
 
 ## Best practices
-Usually, your `loop()` is running very fast (more than 1000 times per second). Now, an LED strip does not need to (and cannot) be updated so fast. So you **must update the LED strip at a slower interval**. Here are two techniques: one with a `Plaquette Metronome` and another with a `Plaquette TimeField`.
+Usually, your `loop()` is running very fast (more than 1000 times per second). Now, an LED strip does not need to (and cannot) be updated so fast. So you **must update the LED strip at a slower interval**. Here are two techniques: one with a `Plaquette Metronome` and another with a Plaquette `TimeSliceField`.
 
 ### With a `Metronome`
 
@@ -86,39 +86,39 @@ Metronome:   [✓]         [✓]         [✓]         [✓]
               LED update  LED update  LED update  LED update
 ```
 
-### Draw a `TimeField`
+### Draw a `TimeSliceField`
 
-A `TimeField` allows you to establish a "time bridge" between the fast `loop()` and the slow update speed of the LED strip.
+A `TimeSliceField` allows you to establish a "time bridge" between the fast `loop()` and the slow update speed of the LED strip.
 
-A `TimeField` not only collects data over time, but also spreads the processing across multiple `loop()` iterations.
+A `TimeSliceField` not only collects data over time, but also spreads the processing across multiple `loop()` iterations.
 
 This avoids a performance spike from computing all samples in a single burst right before updating the strip. Instead, a small amount of work is done each loop, keeping performance smooth and consistent.
 
-In *global space*, declare a `TimeField` that contains 16 samples (the number of samples does **not** have to match the number of puxels) that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
+In *global space*, declare a `TimeSliceField` that contains 16 samples (the number of samples does **not** have to match the number of pixels) that will be taken over a period of 50 milliseconds (for a refresh rate of 20 Hz):
 ```cpp
-TimeField<16> timeMap{0.05}; // 16 samples over a period of 50 ms
+TimeSliceField<16> timeSliceField{0.05}; // 16 samples over a period of 50 ms
 ```
 
-In your `loop()`, feed any float-based data source (such as a Wave, Ramp, or `analogIn`) into the `TimeField`. Then, check if the `TimeField` has triggered (i.e., its time period has elapsed), and instruct the strip to draw using the collected samples:
+In your `loop()`, feed any float-based data source (such as a Wave, Ramp, or `analogIn`) into the `TimeSliceField`. Then, check if the `TimeSliceField` has triggered (i.e., its time period has elapsed), and instruct the strip to draw using the collected samples:
 ```cpp
-SineWave >> timeMap;
+sineWave >> timeSliceField;
 
-if (timeMap.updated()) // 50 milliseconds have passed
+if (timeSliceField.updated()) // 50 milliseconds have passed
 {
-    strip.draw(timeMap); // Draw the 16 samples onto the strip using the current palette
+    strip.draw(timeSliceField); // Draw the 16 samples onto the strip using the current palette
 }
 ```
 
-The `TimeField` collects 16 samples over a 50 ms period (e.g., from a wave or analog input). After 50 ms, it triggers once and uses the collected samples to update the LED strip.
+The `TimeSliceField` collects 16 samples over a 50 ms period (e.g., from a wave or analog input). After 50 ms, it triggers once and uses the collected samples to update the LED strip.
 
-To capture a full cycle of a waveform (like a SineWave), the waveform's period should match the `TimeField`'s period — in this case, 50 ms.
+To capture a full cycle of a waveform (like a Wave), the waveform's period should match the `TimeSliceField`'s period — in this case, 50 ms.
 
 ```text
 loop():      [ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ][ x ]...
 Time (ms):                                                 50  ...
 SineWave:    [0.3][0.2][0.1][0.0][0.1][0.2][0.3][0.4][0.5][0.6]...   
                                                             |
-                                                TimeField triggers here (50 ms have passed)
+                                                TimeSliceField triggers here (50 ms have passed)
 LED draw:                                       Draw the collected data to the strip 
 ```
 
