@@ -95,7 +95,7 @@ void step()
     float signal;
     if (USE_WAVE) {
         // Adjust wave based on potentiometer; keep time slice in sync.
-        float period = pot.mapTo(10, 1);
+        float period = pot.mapTo(10, 0.25);
         wave.period(period);
         timeSliceField.period(period);
 
