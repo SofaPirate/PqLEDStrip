@@ -17,15 +17,38 @@
       "top": -211.8,
       "left": 99,
       "rotate": 90,
-      "attrs": { "color": "blue", "xray": "1" }
+      "attrs": { "color": "blue", "xray": "" }
     },
     {
       "type": "wokwi-potentiometer",
       "id": "pot1",
       "top": 1,
-      "left": 229.1,
+      "left": 267.5,
       "rotate": 270,
       "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -220.8,
+      "left": -38.4,
+      "attrs": { "text": "Push to change\nanimation mode →" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text2",
+      "top": -48,
+      "left": 230.4,
+      "attrs": { "text": "Turn to adjust\nsignal\n→" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text3",
+      "top": -240,
+      "left": 192,
+      "attrs": {
+        "text": "Modes:\n1. Brightness\n2. Pivot: ramp\n3. Pivot: center\n4. Pivot: bump\n5. Time slice"
+      }
     }
   ],
   "connections": [
