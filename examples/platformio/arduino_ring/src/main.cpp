@@ -14,7 +14,7 @@
 const int NUM_LEDS = 16;
 
 // You can change this to true to enable the wave instead of potentiometer raw value.
-const bool USE_WAVE = true;
+const bool USE_WAVE = false;
 
 // The LED strip.
 LEDStripWS281X<6, GRB, NUM_LEDS> strip{}; // <PIN RGB_ORDER COUNT>
@@ -24,6 +24,7 @@ AnalogIn pot(A0);
 
 // Sine wave.
 Wave wave(SINE, 2.0);
+// Wave wave(SQUARE, 2.0, 0.5);
 
 // Pushbutton for mode.
 DigitalIn button(2, INTERNAL_PULLUP);
@@ -67,8 +68,12 @@ void begin()
 {
     // Debounce button.
     button.debounce();
-    startCurrentMode();
+    
+    // Set time slice field to rolling mode.
     timeSliceField.rolling();
+
+    // Start mode.
+    startCurrentMode();
 
     // Set palette.
     // List of palettes: https://fastled.io/docs/d3/d4f/group___predefined_palettes.html
@@ -86,11 +91,20 @@ void step()
         startCurrentMode();
     }
 
-    // Manage wave.
-    wave.period(pot.mapTo(10, 1));
-    
-    // Assign signal depending on using wave or not.
-    float signal = USE_WAVE ? wave : pot;
+    // Make adjustments and assign signal depending on using wave or not.
+    float signal;
+    if (USE_WAVE) {
+        // Adjust wave based on potentiometer; keep time slice in sync.
+        float period = pot.mapTo(10, 1);
+        wave.period(period);
+        timeSliceField.period(period);
+
+        // Assign signal.
+        signal = wave;
+    }
+    else {
+        signal = pot;
+    }
 
     // Manage modes.
 
@@ -135,7 +149,7 @@ void step()
         signal >> timeSliceField;
 
         if (timeSliceField.updated()) {
-            strip.draw(timeSliceField, true);
+            strip.draw(timeSliceField);
         }
     }
 }
