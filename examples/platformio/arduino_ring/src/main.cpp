@@ -14,7 +14,7 @@
 const int NUM_LEDS = 16;
 
 // You can change this to true to enable the wave instead of potentiometer raw value.
-const bool USE_WAVE = false;
+bool useWave = true;
 
 // The LED strip.
 LEDStripWS281X<6, GRB, NUM_LEDS> strip{}; // <PIN RGB_ORDER COUNT>
@@ -87,13 +87,14 @@ void step()
 {
     // Change mode on button press.
     if (button.rose()) {
+        // Change to next mode.
         currentMode = (AnimationMode)((currentMode + 1) % N_MODES);
         startCurrentMode();
     }
 
     // Make adjustments and assign signal depending on using wave or not.
     float signal;
-    if (USE_WAVE) {
+    if (useWave) {
         // Adjust wave based on potentiometer; keep time slice in sync.
         float period = pot.mapTo(10, 0.25);
         wave.period(period);
