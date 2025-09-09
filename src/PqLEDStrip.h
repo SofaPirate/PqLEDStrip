@@ -25,22 +25,35 @@
 
 namespace pq
 {
-    template <uint32_t PIN, EOrder ORDER, uint32_t N_PIXELS>
+    template <uint32_t PIN, EOrder ORDER, uint16_t N_PIXELS>
     class LEDStripWS281X : public Unit
     {
+        // Make sure N_PIXELS is at least 1.
         static_assert(N_PIXELS > 0, "N_PIXELS must be greater than 0");
     private:
-        const uint32_t _nPixels = N_PIXELS;
+        // Pixel buffer.
         CRGB _pixels[N_PIXELS];
+        
+        // Current pixel index in the circular buffer.
         int _pixelIndex = 0;
+
+        // FastLED controller.
         CLEDController *controller;
+
+        // True when the strip needs to be updated.
         bool _needToShow = false;
-        bool _needToFill = false;
+
+        // Current value.
         float _value;
-        float _pixelProportionSize;
+
+        // Pixel size in proportion (to use with fields).
+        static constexpr float PROPORTION_PER_PIXEL = 1.0f / N_PIXELS;
+
+        // Current brightness.
         int _brightness = 255;
 
     private:
+        /// Palette types.
         enum class PaletteType
         {
             NONE,
@@ -53,6 +66,7 @@ namespace pq
             HSV256
         };
 
+        // Current palette.
         PaletteType _paletteType = PaletteType::NONE;
         TBlendType _blend = LINEARBLEND;
 
@@ -81,15 +95,10 @@ namespace pq
         }
 
     private:
-        void init()
-        {
-            _pixelProportionSize = 1.0f / N_PIXELS;
-        }
-
+        // Get color from value in [0, 1].
         CRGB getColor(float value) const
         {
-            value *= 255;
-            uint8_t frac8 = round(value);
+            uint8_t frac8 = round(value*255);
 
             switch (_paletteType)
             {
@@ -101,9 +110,6 @@ namespace pq
                 return ColorFromPalette(*_palette256, frac8, 255, _blend);
             case PaletteType::PROGMEM16:
                 return ColorFromPalette(*_progmemPalette16, frac8, 255, _blend);
-                // Serial.println(frac8);
-                // return ColorFromPalette(RainbowColors_p,frac8, 255, _blend);
-                // return CRGB(frac8, 0, 0);
             case PaletteType::HSV16:
                 return ColorFromPalette(*_hsvPalette16, frac8, 255, _blend);
             case PaletteType::HSV32:
@@ -118,58 +124,105 @@ namespace pq
 
     public:
         /// Constructor.
-        LEDStripWS281X()
-        {
-            init();
-        }
+        LEDStripWS281X() {}
 
+        /**
+         * Constructor for CRGBPalette16.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /**
+         * Constructor for CRGBPalette32.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /**
+         * Constructor for CRGBPalette1256.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /**
+         * Constructor for TProgmemRGBPalette16.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /**
+         * Constructor for CHSVPalette16.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /**
+         * Constructor for CHSVPalette32.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /**
+         * Constructor for CHSVPalette256.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         LEDStripWS281X(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
         {
-            init();
             palette(p, blend);
         }
 
+        /// Clear the palette.
         void noPalette()
         {
             _paletteType = PaletteType::NONE;
         }
 
+        /**
+         * Sets CRGBPalette16 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             _palette16 = &p;
@@ -177,6 +230,13 @@ namespace pq
             _paletteType = PaletteType::PALETTE16;
         }
 
+        /**
+         * Sets CRGBPalette32 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
         {
             _palette32 = &p;
@@ -184,6 +244,13 @@ namespace pq
             _paletteType = PaletteType::PALETTE32;
         }
 
+        /**
+         * Sets CRGBPalette256 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
         {
             _palette256 = &p;
@@ -191,6 +258,13 @@ namespace pq
             _paletteType = PaletteType::PALETTE256;
         }
 
+        /**
+         * Sets TProgmemRGBPalette16 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             _progmemPalette16 = &p;
@@ -198,6 +272,13 @@ namespace pq
             _paletteType = PaletteType::PROGMEM16;
         }
 
+        /**
+         * Sets CHSVPalette16 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
         {
             _hsvPalette16 = &p;
@@ -205,6 +286,13 @@ namespace pq
             _paletteType = PaletteType::HSV16;
         }
 
+        /**
+         * Sets CHSVPalette32 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
         {
             _hsvPalette32 = &p;
@@ -212,6 +300,13 @@ namespace pq
             _paletteType = PaletteType::HSV32;
         }
 
+        /**
+         * Sets CHSVPalette256 palette.
+         * 
+         * @param p The palette to use.
+         * @param blend The blend type to use.
+         * @note The palette is set to LINEARBLEND by default.
+         */
         void palette(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
         {
             _hsvPalette256 = &p;
@@ -219,6 +314,13 @@ namespace pq
             _paletteType = PaletteType::HSV256;
         }
 
+
+        /**
+         * Draws a field on the strip.
+         * 
+         * @param field The field to draw.
+         * @param wrap Whether to wrap the field or not (default: false).
+         */
         void draw(AbstractField& field, bool wrap = false)
         {
             float pixelProportionSize;
@@ -231,7 +333,7 @@ namespace pq
                 pixelProportionSize = 1.0f / min(N_PIXELS-1, 1);
                 proportion = 0;
             }
-            for (uint32_t i = 0; i < N_PIXELS; i++, proportion += _pixelProportionSize)
+            for (uint32_t i = 0; i < N_PIXELS; i++, proportion += PROPORTION_PER_PIXEL)
             {
                 float value = field.at(proportion);
                 CRGB color = getColor(value);
@@ -283,7 +385,7 @@ namespace pq
             return _brightness / 255.0f;
         }
 
-        // PUT SHOULD BE A FORCED OVERRIDE
+        /// Sets value in [0, 1].
         virtual float put(float value) override
         {
             _value = value;
