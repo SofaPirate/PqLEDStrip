@@ -1,7 +1,8 @@
 /*
- * PqLedStrip.h
+ * PqLEDStrip.h
  *
  * (c) 2025 Thomas O Fredericks :: tof(@)t-o-f(.)info
+ * (c) 2025 Sofian Audry        :: info(@)sofianaudry(.)com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
