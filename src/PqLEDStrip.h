@@ -376,12 +376,12 @@ namespace pq
          * @param f brightness in [0, 1]
          */
         void brightness(float f) {
-            _brightness = floatToFixed8(f, 255);
+            _brightness = floatToFixed8(f);
         }
 
         /// Returns the brightness of the strip.
         float brightness() const {
-            return fixed8ToFloat(_brightness, 255);
+            return fixed8ToFloat(_brightness);
         }
 
         /// Sets value in [0, 1].
