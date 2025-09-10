@@ -180,6 +180,7 @@ void printCurrentMode() {
 void startCurrentMode() {
     printCurrentMode();
     strip.brightness(1.0);
+    pivotField.mode(PIVOT_FALLING);
     pivotField.rampWidth(0.25);
     pivotField.rampShift(0.5);
     pivotField.bumpWidth(0.25);
