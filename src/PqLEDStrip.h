@@ -105,16 +105,16 @@ namespace pq
     private:
         // Get color from value in [0, 1].
         CRGB getColor(float value) const {
-            const uint8_t frac8 = round(value * 255);
-            
+            const uint8_t frac8 = floatToFixed8(value);
+
             switch (_paletteType) {
-                case PaletteType::PALETTE16:  return ColorFromPalette(*_palette.p16,   frac8, 255, _blend);
-                case PaletteType::PALETTE32:  return ColorFromPalette(*_palette.p32,   frac8, 255, _blend);
-                case PaletteType::PALETTE256: return ColorFromPalette(*_palette.p256,  frac8, 255, _blend);
-                case PaletteType::PROGMEM16:  return ColorFromPalette(*_palette.prog16,frac8, 255, _blend);
-                case PaletteType::HSV16:      return ColorFromPalette(*_palette.hsv16, frac8, 255, _blend);
-                case PaletteType::HSV32:      return ColorFromPalette(*_palette.hsv32, frac8, 255, _blend);
-                case PaletteType::HSV256:     return ColorFromPalette(*_palette.hsv256,frac8, 255, _blend);
+                case PaletteType::PALETTE16:  return ColorFromPalette(*_palette.p16,    frac8, 255, _blend);
+                case PaletteType::PALETTE32:  return ColorFromPalette(*_palette.p32,    frac8, 255, _blend);
+                case PaletteType::PALETTE256: return ColorFromPalette(*_palette.p256,   frac8, 255, _blend);
+                case PaletteType::PROGMEM16:  return ColorFromPalette(*_palette.prog16, frac8, 255, _blend);
+                case PaletteType::HSV16:      return ColorFromPalette(*_palette.hsv16,  frac8, 255, _blend);
+                case PaletteType::HSV32:      return ColorFromPalette(*_palette.hsv32,  frac8, 255, _blend);
+                case PaletteType::HSV256:     return ColorFromPalette(*_palette.hsv256, frac8, 255, _blend);
                 case PaletteType::NONE:
                 default:                      return CRGB(frac8, frac8, frac8);
             }
@@ -376,12 +376,12 @@ namespace pq
          * @param f brightness in [0, 1]
          */
         void brightness(float f) {
-            _brightness = floor(constrain01(f) * 255.0f);
+            _brightness = floatToFixed8(f, 255);
         }
 
         /// Returns the brightness of the strip.
         float brightness() const {
-            return _brightness / 255.0f;
+            return fixed8ToFloat(_brightness, 255);
         }
 
         /// Sets value in [0, 1].
