@@ -53,7 +53,7 @@ namespace pq
         int _brightness = 255;
 
     private:
-        /// Palette types.
+        // Palette types.
         enum class PaletteType
         {
             NONE,
@@ -66,59 +66,57 @@ namespace pq
             HSV256
         };
 
+        // Single tagged-union pointer to any supported palette type.
+        union PalettePtr {
+            const CRGBPalette16*        p16;
+            const CRGBPalette32*        p32;
+            const CRGBPalette256*       p256;
+            const TProgmemRGBPalette16* prog16;
+            const CHSVPalette16*        hsv16;
+            const CHSVPalette32*        hsv32;
+            const CHSVPalette256*       hsv256;
+            const void*                 any;   ///< generic for init/reset
+            constexpr PalettePtr() : any(nullptr) {}
+        };
+
         // Current palette.
         PaletteType _paletteType = PaletteType::NONE;
         TBlendType _blend = LINEARBLEND;
-
-        const CRGBPalette16 *_palette16;
-        const CRGBPalette32 *_palette32;
-        const CRGBPalette256 *_palette256;
-        const TProgmemRGBPalette16 *_progmemPalette16;
-        const CHSVPalette16 *_hsvPalette16;
-        const CHSVPalette32 *_hsvPalette32;
-        const CHSVPalette256 *_hsvPalette256;
+        PalettePtr _palette{};
 
     protected:
+        // Unit begin method.
         virtual void begin() override
         {
             controller = &FastLED.addLeds<WS2812, PIN, ORDER>(_pixels, N_PIXELS);
         }
 
+        // Unit step method.
         virtual void step() override
         {
             // Show LEDs only when needed.
             if (_needToShow)
             {
-                _needToShow = false;
                 controller->showLeds(_brightness);
+                _needToShow = false;
             }
         }
 
     private:
         // Get color from value in [0, 1].
-        CRGB getColor(float value) const
-        {
-            uint8_t frac8 = round(value*255);
-
-            switch (_paletteType)
-            {
-            case PaletteType::PALETTE16:
-                return ColorFromPalette(*_palette16, frac8, 255, _blend);
-            case PaletteType::PALETTE32:
-                return ColorFromPalette(*_palette32, frac8, 255, _blend);
-            case PaletteType::PALETTE256:
-                return ColorFromPalette(*_palette256, frac8, 255, _blend);
-            case PaletteType::PROGMEM16:
-                return ColorFromPalette(*_progmemPalette16, frac8, 255, _blend);
-            case PaletteType::HSV16:
-                return ColorFromPalette(*_hsvPalette16, frac8, 255, _blend);
-            case PaletteType::HSV32:
-                return ColorFromPalette(*_hsvPalette32, frac8, 255, _blend);
-            case PaletteType::HSV256:
-                return ColorFromPalette(*_hsvPalette256, frac8, 255, _blend);
-            case PaletteType::NONE:
-            default:
-                return CRGB(frac8, frac8, frac8);
+        CRGB getColor(float value) const {
+            const uint8_t frac8 = round(value * 255);
+            
+            switch (_paletteType) {
+                case PaletteType::PALETTE16:  return ColorFromPalette(*_palette.p16,   frac8, 255, _blend);
+                case PaletteType::PALETTE32:  return ColorFromPalette(*_palette.p32,   frac8, 255, _blend);
+                case PaletteType::PALETTE256: return ColorFromPalette(*_palette.p256,  frac8, 255, _blend);
+                case PaletteType::PROGMEM16:  return ColorFromPalette(*_palette.prog16,frac8, 255, _blend);
+                case PaletteType::HSV16:      return ColorFromPalette(*_palette.hsv16, frac8, 255, _blend);
+                case PaletteType::HSV32:      return ColorFromPalette(*_palette.hsv32, frac8, 255, _blend);
+                case PaletteType::HSV256:     return ColorFromPalette(*_palette.hsv256,frac8, 255, _blend);
+                case PaletteType::NONE:
+                default:                      return CRGB(frac8, frac8, frac8);
             }
         }
 
@@ -210,9 +208,11 @@ namespace pq
             palette(p, blend);
         }
 
-        /// Clear the palette.
+        /// Clears the palette.
         void noPalette()
         {
+            _palette.any = nullptr;
+            _blend = LINEARBLEND;
             _paletteType = PaletteType::NONE;
         }
 
@@ -225,7 +225,7 @@ namespace pq
          */
         void palette(const CRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
-            _palette16 = &p;
+            _palette.p16 = &p;
             _blend = blend;
             _paletteType = PaletteType::PALETTE16;
         }
@@ -239,7 +239,7 @@ namespace pq
          */
         void palette(const CRGBPalette32 &p, TBlendType blend = LINEARBLEND)
         {
-            _palette32 = &p;
+            _palette.p32 = &p;
             _blend = blend;
             _paletteType = PaletteType::PALETTE32;
         }
@@ -253,7 +253,7 @@ namespace pq
          */
         void palette(const CRGBPalette256 &p, TBlendType blend = LINEARBLEND)
         {
-            _palette256 = &p;
+            _palette.p256 = &p;
             _blend = blend;
             _paletteType = PaletteType::PALETTE256;
         }
@@ -267,7 +267,7 @@ namespace pq
          */
         void palette(const TProgmemRGBPalette16 &p, TBlendType blend = LINEARBLEND)
         {
-            _progmemPalette16 = &p;
+            _palette.prog16 = &p;
             _blend = blend;
             _paletteType = PaletteType::PROGMEM16;
         }
@@ -281,7 +281,7 @@ namespace pq
          */
         void palette(const CHSVPalette16 &p, TBlendType blend = LINEARBLEND)
         {
-            _hsvPalette16 = &p;
+            _palette.hsv16 = &p;
             _blend = blend;
             _paletteType = PaletteType::HSV16;
         }
@@ -295,7 +295,7 @@ namespace pq
          */
         void palette(const CHSVPalette32 &p, TBlendType blend = LINEARBLEND)
         {
-            _hsvPalette32 = &p;
+            _palette.hsv32 = &p;
             _blend = blend;
             _paletteType = PaletteType::HSV32;
         }
@@ -309,11 +309,10 @@ namespace pq
          */
         void palette(const CHSVPalette256 &p, TBlendType blend = LINEARBLEND)
         {
-            _hsvPalette256 = &p;
+            _palette.hsv256 = &p;
             _blend = blend;
             _paletteType = PaletteType::HSV256;
         }
-
 
         /**
          * Draws a field on the strip.
@@ -388,15 +387,16 @@ namespace pq
         /// Sets value in [0, 1].
         virtual float put(float value) override
         {
+            // Update value.
             _value = value;
 
+            // Fill all pixels with color.
             CRGB color = getColor(_value);
             fill_solid(_pixels, N_PIXELS, color);
-
             _needToShow = true;
 
             return get();
-        } // do nothing by default (read-only)
+        }
 
         /// Returns value in [0, 1].
         virtual float get() override { return _value; }
