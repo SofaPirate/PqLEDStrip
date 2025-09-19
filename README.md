@@ -1,14 +1,15 @@
 # PqLEDStrip
-LED strip library for Plaquette.
-
-> [!CAUTION]
-> Work in progress — not ready for use.
+LED strip library for [Plaquette](https://github.com/SofaPirate/Plaquette).
 
 ## Introduction
 
-- `PqLEDStrip` use the `FastLED` library for LED control.
-- Do *not* call `FastLED.show()` as you might be used to. `PqLEDStrip` manages this automagically for you.
-- Try *not* to set the value of the pixels every iteration of the loop, but either with a Plaquette field (eg. `PivotField`, `TimeSliceField`) or on an interval set with a Plaquette `Metronome`. 
+- `PqLEDStrip` uses the `FastLED` library for LED control. It was initially developed with `FastLED` 3.10.1.
+- Do *not* call `FastLED.show()` as you might be used to! `Plaquette` and `PqLEDStrip` manage the *showing* of LEDs automagically for you.
+- Do *not* to set the value of the LEDs every iteration of your update loop because you want your update loop to run as fast as possible and only update the LEDs about every 20 to 50 milliseconds. Use a `Plaquette field` (eg. `PivotField`, `TimeSliceField`) or on an interval set with a `Plaquette` `Metronome`. See best practices at the bottom of this document.
+
+## Strip type support
+
+- Currently, only the WS281X type of strip is supported.
 
 ## Example Declaration
 
@@ -35,10 +36,10 @@ Creates a strip and sets a palette.
 - `palette` is a FastLED palette of type `CRGBPalette16`, `CRGBPalette32`, `CRGBPalette256`, `TProgmemRGBPalette16`,`CHSVPalette16`, `CHSVPalette32` or `CHSVPalette256`.
 - `blend` is either `LINEARBLEND`, `LINEARBLEND_NOWRAP`, or `NOBLEND`.
 
-## Pixel  Management
+## Pixel Management
 
 ### `void draw(AbstractField& field)`
-Fills the entire strip using values from a Plaquette field, rendered with the current palette. See below on how to use with a `TimeSliceField`.
+Fills the entire strip using values from a `Plaquette` field, rendered with the current palette. See below on how to use with a `TimeSliceField`.
 
 ### `void setPixel(int index, CRGB color)`
 Manually set the color of an individual pixel.
@@ -60,7 +61,7 @@ Set a palette.
 - `blend` is either `LINEARBLEND`, `LINEARBLEND_NOWRAP`, or `NOBLEND`.
 
 ## Best practices
-Usually, your `loop()` is running very fast (more than 1000 times per second). Now, an LED strip does not need to (and cannot) be updated so fast. So you **must update the LED strip at a slower interval**. Here are two techniques: one with a `Plaquette Metronome` and another with a Plaquette `TimeSliceField`.
+Usually, your *update loop* is running very fast (more than 1000 times per second). Now, a LED strip does not need to (and probably cannot) be updated so fast. So you **must update the LED strip at a slower interval**. Here are two techniques: one with a `Plaquette Metronome` and another with a Plaquette `TimeSliceField`.
 
 ### With a `Metronome`
 
@@ -69,7 +70,7 @@ In *global space*, declare a Metronome with a period of 50 milliseconds (for a r
 Metronome stripUpdateMetronome{0.05};
 ```
 
-In your `loop()`, check if the `Metronome` has triggered and update the `strip`:
+In your *update loop*, check if the `Metronome` has triggered and update the `strip`:
 ```cpp
 if (stripUpdateMetronome)
 {

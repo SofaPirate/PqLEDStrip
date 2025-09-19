@@ -1,0 +1,9 @@
+# PqLEDStrip library keywords
+PqLEDStrip      KEYWORD1
+LEDStripWS281X  KEYWORD1
+draw            KEYWORD1
+setPixel        KEYWORD1
+nPixels         KEYWORD1
+brightness      KEYWORD1
+noPalette       KEYWORD1
+palette         KEYWORD1

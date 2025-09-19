@@ -1,6 +1,6 @@
 {
   "name": "PqLEDStrip",
-  "version": "0.1",
+  "version": "1.0.1",
   "description": "LED strip library for Plaquette",
   "keywords": "Display",
   "repository":
@@ -21,11 +21,11 @@
   "dependencies": [
     {
       "name": "Plaquette",
-      "version": "https://github.com/SofaPirate/Plaquette.git#develop"
+      "version": "https://github.com/SofaPirate/Plaquette.git"
     } ,
     {
       "name": "FastLED",
-      "version": "https://github.com/FastLED/FastLED#3.10.1"
+      "version": "https://github.com/FastLED/FastLED"
     }
   ],
   "frameworks": "*",
