@@ -13,7 +13,7 @@ LED strip library for [Plaquette](https://github.com/SofaPirate/Plaquette).
 
 ## Example Declaration
 
-`LEDStripWS281X<3, RGB, 16> myStrip()`
+`LEDStripWS281X<3, RGB, 16> myStrip`
 
 ## Template Parameters
 
